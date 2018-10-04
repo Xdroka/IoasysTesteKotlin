@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IoasysTesteKotlin</string>
+    <string name="welcome">BEM-VINDO AO EMPRESAS</string>
+    <string name="siggin_button">Entrar</string>
+</resources>
