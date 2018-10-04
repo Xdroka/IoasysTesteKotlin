@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">IoasysTesteKotlin</string>
     <string name="welcome">BEM-VINDO AO EMPRESAS</string>
+    <string name="loren">Lorem ipsum dolor sit amet, contetur adipiscing elit. Nunc accumsan.</string>
     <string name="siggin_button">Entrar</string>
+    <string name="logo">TODO: Logo da empresa Ioasys</string>
+    <string name="email_field">Email</string>
+    <string name="password_field">Senha</string>
+    <string name="msg_intro_home">Clique na busca para iniciar.</string>
 </resources>
