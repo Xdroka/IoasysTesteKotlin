@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="viewModel"
+            name="vm"
             type="pedro.com.ioasystestekotlin.viewmodel.LoginViewModel" />
+
         <import type="android.view.View" />
-        <import type="pedro.com.ioasystestekotlin.model.User"/>
     </data>
 
     <ScrollView
@@ -83,7 +84,7 @@
                     android:hint="@string/email_field"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:text="@={viewmodel.user.email}"/>
+                    android:text="@={vm.user.email}" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -106,7 +107,7 @@
                     android:hint="@string/password_field"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:text="@={viewmodel.user.password}"/>
+                    android:text="@={vm.user.password}" />
 
             </android.support.design.widget.TextInputLayout>
 
