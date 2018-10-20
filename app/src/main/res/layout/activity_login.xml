@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="pedro.com.ioasystestekotlin.viewmodel.LoginViewModel" />
@@ -56,8 +55,8 @@
                 android:id="@+id/lorenTextViewId"
                 android:layout_width="252dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:text="@string/loren"
                 android:textColor="@color/text"
@@ -72,6 +71,8 @@
                 android:layout_width="257dp"
                 android:layout_height="62dp"
                 android:layout_marginTop="40dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearance.AppCompat"
                 app:layout_constraintEnd_toEndOf="@+id/lorenTextViewId"
                 app:layout_constraintStart_toStartOf="@+id/lorenTextViewId"
                 app:layout_constraintTop_toBottomOf="@+id/lorenTextViewId">
@@ -115,12 +116,12 @@
                 android:id="@+id/sigin_button"
                 android:layout_width="195dp"
                 android:layout_height="39dp"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
                 android:layout_weight="1"
                 android:background="@color/greeny_blue"
+                android:onClick="@{() -> vm.onClick()}"
                 android:text="@string/siggin_button"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
