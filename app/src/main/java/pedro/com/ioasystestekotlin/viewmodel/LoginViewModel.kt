@@ -3,7 +3,8 @@ package pedro.com.ioasystestekotlin.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import pedro.com.ioasystestekotlin.model.api.ApiConnection
-import pedro.com.ioasystestekotlin.model.data.MessageError
+import pedro.com.ioasystestekotlin.model.data.EnabledChange
+import pedro.com.ioasystestekotlin.model.data.ErrorMessage
 import pedro.com.ioasystestekotlin.model.data.User
 import java.util.regex.Pattern
 
@@ -11,28 +12,42 @@ class LoginViewModel : ViewModel() {
     var user = MutableLiveData<User>().also {
         it.value = User()
     }
-    var message = MutableLiveData<MessageError>().also { it.value = MessageError() }
+    var message = MutableLiveData<ErrorMessage>().also {
+        it.value = ErrorMessage()
+    }
+    var changeActivity = MutableLiveData<EnabledChange>().also {
+        it.value = EnabledChange()
+    }
+    var buttonEnabled = MutableLiveData<EnabledChange>().also {
+        it.value = EnabledChange(true)
+    }
+    var errorLogin = MutableLiveData<ErrorMessage>().also {
+        it.value = ErrorMessage()
+    }
     var api: ApiConnection = ApiConnection()
 
     fun onClick() {
-        var email = user.value?._email ?: ""
-        var password = user.value?._password ?: ""
+        val email = user.value?._email ?: ""
+        val password = user.value?._password ?: ""
 
-        if(email == "" || password == "") {
-//            return
-            email = "testeapp@ioasys.com.br"
-            password = "12341234"
+        if (email == ""
+                || password == ""
+                || buttonEnabled.value?._enableChange != true) {
+            return
         }
 
-        message.value?._errorMessage = "Teste"
         if (isEmail(email)) {
+            errorLogin.value?._errorMessage = ""
+            buttonEnabled.postValue(EnabledChange(false))
             api.auth(
-                    User(
-                        email,
-                        password
-                    ),
-                    message
+                    User(email, password),
+                    message,
+                    changeActivity,
+                    buttonEnabled
             )
+        }
+        else{
+            errorLogin.value?._errorMessage = "Login Ínvalido"
         }
     }
 

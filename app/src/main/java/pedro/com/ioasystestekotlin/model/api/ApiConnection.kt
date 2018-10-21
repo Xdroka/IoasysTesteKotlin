@@ -1,10 +1,7 @@
 package pedro.com.ioasystestekotlin.model.api
 
 import android.arch.lifecycle.MutableLiveData
-import pedro.com.ioasystestekotlin.model.data.AuthRequest
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
-import pedro.com.ioasystestekotlin.model.data.MessageError
-import pedro.com.ioasystestekotlin.model.data.User
+import pedro.com.ioasystestekotlin.model.data.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConnection {
     private var mRetrofit: Retrofit
     private var mService: WebService
-    var header = MutableLiveData<HeaderApi?>().also { it.value = null }
+    var header: HeaderApi? = null
 
     init {
         mRetrofit = Retrofit.Builder()
@@ -24,24 +21,29 @@ class ApiConnection {
         mService = mRetrofit.create(WebService::class.java)
     }
 
-    fun auth(user: User, message: MutableLiveData<MessageError>) {
+    fun auth(user: User, message: MutableLiveData<ErrorMessage>,
+             changeActivity: MutableLiveData<EnabledChange>, buttonEnabled: MutableLiveData<EnabledChange>) {
         val call = mService.authentification(user)
 
         call.enqueue(object : Callback<AuthRequest> {
             override fun onFailure(call: Call<AuthRequest>, t: Throwable) {
-                message.value?._errorMessage = "Falha na conexão"
+                message.postValue(ErrorMessage("Falha na conexão"))
+                buttonEnabled.postValue(EnabledChange(true))
             }
 
             override fun onResponse(call: Call<AuthRequest>, response: Response<AuthRequest>) {
                 if (response.isSuccessful) {
-                    header.value = HeaderApi(
-                                            response.headers().get("access-token"),
-                                            response.headers().get("uid"),
-                                            response.headers().get("client")
+                    header = HeaderApi(
+                            response.headers().get("access-token"),
+                            response.headers().get("uid"),
+                            response.headers().get("client")
                     )
+                    changeActivity.postValue(EnabledChange(true))
                 } else {
-                    message.value?._errorMessage = "Falha no Login"
+                    message.postValue(ErrorMessage("Falha no Login"))
                 }
+                message.postValue(ErrorMessage(header?.uid.toString()))
+                buttonEnabled.postValue(EnabledChange(true))
             }
 
         })
