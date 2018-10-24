@@ -7,4 +7,5 @@
     <string name="email_field">Email</string>
     <string name="password_field">Senha</string>
     <string name="msg_intro_home">Clique na busca para iniciar.</string>
+    <string name="search_hint">Pesquisar</string>
 </resources>

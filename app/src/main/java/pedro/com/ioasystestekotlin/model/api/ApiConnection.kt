@@ -21,13 +21,13 @@ class ApiConnection {
         mService = mRetrofit.create(WebService::class.java)
     }
 
-    fun auth(user: User, message: MutableLiveData<ErrorMessage>,
+    fun auth(user: User, message: MutableLiveData<StringLiveData>,
              changeActivity: MutableLiveData<EnabledChange>, buttonEnabled: MutableLiveData<EnabledChange>) {
         val call = mService.authentification(user)
 
         call.enqueue(object : Callback<AuthRequest> {
             override fun onFailure(call: Call<AuthRequest>, t: Throwable) {
-                message.postValue(ErrorMessage("Falha na conexão"))
+                message.postValue(StringLiveData("Falha na conexão"))
                 buttonEnabled.postValue(EnabledChange(true))
             }
 
@@ -39,11 +39,30 @@ class ApiConnection {
                             response.headers().get("client")
                     )
                     changeActivity.postValue(EnabledChange(true))
+                    message.postValue(StringLiveData(header?.uid.toString())) //retirar essa linha depois de testes
                 } else {
-                    message.postValue(ErrorMessage("Falha no Login"))
+                    message.postValue(StringLiveData("Login Ínvalido"))
                 }
-                message.postValue(ErrorMessage(header?.uid.toString()))
                 buttonEnabled.postValue(EnabledChange(true))
+            }
+
+        })
+    }
+
+    fun searchEnterprises(enterpriseName: String, messageToast: MutableLiveData<StringLiveData>) {
+        if (header == null) return
+        val call = mService.findEnterprises(enterpriseName, header!!)
+
+        call.enqueue(object : Callback<List<Enterprise>> {
+            override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
+                messageToast.postValue(StringLiveData("Falha na conexão"))
+            }
+
+            override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
+                if (!response.isSuccessful) return
+
+                messageToast.postValue(StringLiveData(response.body()?.get(0)?.enterprise_type_name ?: "fail"))
+
             }
 
         })
@@ -51,7 +70,7 @@ class ApiConnection {
 
 
     companion object {
-        //        const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br/"
+        const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br/"
         const val BASE_URL = "http://empresas.ioasys.com.br/api/v1/"
     }
 

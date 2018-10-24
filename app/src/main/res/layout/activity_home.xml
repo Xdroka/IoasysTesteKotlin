@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.HomeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarId"
+    <data>
+
+        <variable
+            name="vm"
+            type="pedro.com.ioasystestekotlin.viewmodel.HomeViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".view.HomeActivity">
 
-        <Toolbar
-            android:id="@+id/toolbar_search"
-            android:layout_width="wrap_content"
-            android:fitsSystemWindows="true"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarId"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:logo="@drawable/logo_nav"
-            android:theme="@style/HomeScreen" />
-    </android.support.design.widget.AppBarLayout>
+            android:fitsSystemWindows="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/msgTextViewId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/msg_intro_home"
-        android:textColor="@color/text"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarId" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarSearchId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fitsSystemWindows="true"
+                android:theme="@style/HomeScreen"
+                android:title="">
 
+                <ImageView
+                    android:id="@+id/logoImageViewId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/logo_nav"
+                    android:contentDescription="@string/logo"
+                    android:foregroundGravity="center" />
+            </android.support.v7.widget.Toolbar>
 
-</android.support.constraint.ConstraintLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <TextView
+            android:id="@+id/msgTextViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_intro_home"
+            android:textColor="@color/text"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarId" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

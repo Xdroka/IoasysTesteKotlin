@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import pedro.com.ioasystestekotlin.model.api.ApiConnection
 import pedro.com.ioasystestekotlin.model.data.EnabledChange
-import pedro.com.ioasystestekotlin.model.data.ErrorMessage
+import pedro.com.ioasystestekotlin.model.data.StringLiveData
 import pedro.com.ioasystestekotlin.model.data.User
 import java.util.regex.Pattern
 
@@ -12,8 +12,8 @@ class LoginViewModel : ViewModel() {
     var user = MutableLiveData<User>().also {
         it.value = User()
     }
-    var message = MutableLiveData<ErrorMessage>().also {
-        it.value = ErrorMessage()
+    var message = MutableLiveData<StringLiveData>().also {
+        it.value = StringLiveData()
     }
     var changeActivity = MutableLiveData<EnabledChange>().also {
         it.value = EnabledChange()
@@ -21,10 +21,15 @@ class LoginViewModel : ViewModel() {
     var buttonEnabled = MutableLiveData<EnabledChange>().also {
         it.value = EnabledChange(true)
     }
-    var errorLogin = MutableLiveData<ErrorMessage>().also {
-        it.value = ErrorMessage()
+    var errorLogin = MutableLiveData<StringLiveData>().also {
+        it.value = StringLiveData()
     }
     var api: ApiConnection = ApiConnection()
+
+    init {
+        api.auth(User("testeapple@ioasys.com.br", "12341234"),
+                message,changeActivity,buttonEnabled)
+    }
 
     fun onClick() {
         val email = user.value?._email ?: ""
@@ -37,7 +42,7 @@ class LoginViewModel : ViewModel() {
         }
 
         if (isEmail(email)) {
-            errorLogin.value?._errorMessage = ""
+            errorLogin.postValue(StringLiveData())
             buttonEnabled.postValue(EnabledChange(false))
             api.auth(
                     User(email, password),
@@ -47,7 +52,7 @@ class LoginViewModel : ViewModel() {
             )
         }
         else{
-            errorLogin.value?._errorMessage = "Login Ínvalido"
+            errorLogin.postValue(StringLiveData("Login Ínvalido"))
         }
     }
 

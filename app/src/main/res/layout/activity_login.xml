@@ -131,18 +131,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
                 app:layout_constraintVertical_bias="0.20999998" />
 
-            <TextView
-                android:id="@+id/errorLoginTextViewId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/holo_red_light"
-                android:text="@={vm.errorLogin.errorMessage}"
-                app:layout_constraintBottom_toTopOf="@+id/emailInputLayout2"
-                app:layout_constraintStart_toStartOf="@+id/emailInputLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/lorenTextViewId" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -10,7 +10,7 @@ import android.widget.Toast
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
 import pedro.com.ioasystestekotlin.model.data.EnabledChange
-import pedro.com.ioasystestekotlin.model.data.ErrorMessage
+import pedro.com.ioasystestekotlin.model.data.StringLiveData
 import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -21,11 +21,11 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-        binding.vm?.message?.observe(this, Observer<ErrorMessage> { t ->
-            val errorMessage = t?._errorMessage ?: ""
+        binding.vm?.message?.observe(this, Observer<StringLiveData> { t ->
+            val errorMessage = t?._text ?: ""
             if (errorMessage != "" ) {
                 toast(errorMessage)
-                binding.vm?.message?.postValue(ErrorMessage())
+                binding.vm?.message?.postValue(StringLiveData())
             }
         })
 
