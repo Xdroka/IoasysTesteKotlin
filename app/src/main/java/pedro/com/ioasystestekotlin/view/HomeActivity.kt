@@ -27,40 +27,9 @@ class HomeActivity : AppCompatActivity() {
         binding.vm = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         setSupportActionBar(binding.toolbarSearchId)
 
-        binding.vm?.setHeader(
-                intent?.extras?.get("token").toString(),
-                intent?.extras?.get("uid").toString(),
-                intent?.extras?.get("client").toString()
-        )
+        retrievingHeaders()
+        creatingObservers()
 
-        binding.vm?.observables?.message?.observe(this, Observer<StringLiveData> { t ->
-            val message = t?._text ?: ""
-            if (message != "") {
-                toast(message)
-            }
-        })
-
-        binding.vm?.observables?.changeActivity?.observe(this, Observer<EnabledChange> { t ->
-            if (t?.enableChange == true) {
-//                val intent = Intent(this@HomeActivity,)
-                //mandar photo, nameEnterprise, description
-            }
-        })
-
-        binding.vm?.observables?.loadingVisibility?.observe(this, Observer { t ->
-            if(t?.enableChange == true){
-                binding.loadingProgressBarId.visibility = View.VISIBLE
-            }
-            else{
-                binding.loadingProgressBarId.visibility = View.GONE
-            }
-        })
-
-        binding.vm?.enterpriseList?.observe(this, Observer { listEnterprises ->
-            if(listEnterprises?.isEmpty() == false ){
-//                setupRecycler(listEnterprises)
-            }
-        })
         binding.executePendingBindings()
     }
 
@@ -74,8 +43,8 @@ class HomeActivity : AppCompatActivity() {
         val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView?
         searchView?.queryHint = getString(R.string.search_hint)
 
-        searchView?.setOnSearchClickListener { t->
-            if(t.isActivated){
+        searchView?.setOnSearchClickListener { t ->
+            if (t.isActivated) {
                 binding.msgTextViewId.visibility = View.GONE
             }
         }
@@ -93,6 +62,57 @@ class HomeActivity : AppCompatActivity() {
 
         })
         return result
+    }
+
+    private fun creatingObservers() {
+        setMessageListenner()
+        setChangeActivityListener()
+        setLoadingProgressBar()
+        setEnterpriseListListener()
+    }
+
+    private fun setEnterpriseListListener() {
+        binding.vm?.enterpriseList?.observe(this, Observer { listEnterprises ->
+            if (listEnterprises?.isEmpty() == false) {
+//                setupRecycler(listEnterprises)
+            }
+        })
+    }
+
+    private fun setLoadingProgressBar() {
+        binding.vm!!.observables.loadingVisibility.observe(this, Observer { t ->
+            if (t?.enableChange == true) {
+                binding.loadingProgressBarId.visibility = View.VISIBLE
+            } else {
+                binding.loadingProgressBarId.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun setChangeActivityListener() {
+        binding.vm!!.observables.changeActivity.observe(this, Observer<EnabledChange> { t ->
+            if (t?.enableChange == true) {
+                //                val intent = Intent(this@HomeActivity,)
+                //mandar photo, nameEnterprise, description
+            }
+        })
+    }
+
+    private fun setMessageListenner() {
+        binding.vm!!.observables.message.observe(this, Observer<StringLiveData> { t ->
+            val message = t?._text ?: ""
+            if (message != "") {
+                toast(message)
+            }
+        })
+    }
+
+    private fun retrievingHeaders() {
+        binding.vm!!.setHeader(
+                intent?.extras?.get("token").toString(),
+                intent?.extras?.get("uid").toString(),
+                intent?.extras?.get("client").toString()
+        )
     }
 
     fun setupRecycler(enterpriseList: List<Enterprise>) {

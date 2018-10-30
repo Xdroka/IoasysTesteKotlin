@@ -61,12 +61,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="16dp"
                 android:text="@{item.enterprise.country}"
-                tools:text="@string/enterprise_country"
                 android:textStyle="italic"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/bussinessTextViewId" />
+                app:layout_constraintTop_toBottomOf="@+id/bussinessTextViewId"
+                tools:text="@string/enterprise_country" />
 
 
         </android.support.constraint.ConstraintLayout>
