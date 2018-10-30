@@ -1,11 +1,9 @@
 package pedro.com.ioasystestekotlin.model.data
 
 data class Enterprise(
-        val enterpriseName: String?,
-        val photo: String?,
-        val description: String?,
-        val city: String?,
-        val country: String?,
-//        val enterprise_type: TypeEnterprise{
-        val enterprise_type_name:String
+        var enterprise_name: String? = "",
+        var photo: String? = "",
+        var description: String? = "",
+        var country: String? = "",
+        var enterprise_type: TypeEnterprise = TypeEnterprise()
 )

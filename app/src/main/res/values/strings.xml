@@ -8,4 +8,9 @@
     <string name="password_field">Senha</string>
     <string name="msg_intro_home">Clique na busca para iniciar.</string>
     <string name="search_hint">Pesquisar</string>
+    <string name="enterprise_name">Nome da Empresa</string>
+    <string name="enterprise_bussiness_type">Negócio</string>
+    <string name="enterprise_country">País</string>
+    <string name="error_invalid_email">Digite um email válido</string>
+    <string name="error_invalid_password">A senha deve conter no mínimo 4 caracteres</string>
 </resources>

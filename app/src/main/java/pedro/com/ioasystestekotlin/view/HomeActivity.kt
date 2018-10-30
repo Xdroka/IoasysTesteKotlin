@@ -13,7 +13,9 @@ import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.model.data.EnabledChange
 import pedro.com.ioasystestekotlin.model.data.StringLiveData
 import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
-
+import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import pedro.com.ioasystestekotlin.model.data.Enterprise
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -26,11 +28,12 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarSearchId)
 
         binding.vm?.setHeader(
-                intent?.extras?.get("token") as String,
-                intent?.extras?.get("uid") as String,
-                intent?.extras?.get("client") as String
+                intent?.extras?.get("token").toString(),
+                intent?.extras?.get("uid").toString(),
+                intent?.extras?.get("client").toString()
         )
-        binding.vm?.observables?.messageToast?.observe(this, Observer<StringLiveData> { t ->
+
+        binding.vm?.observables?.message?.observe(this, Observer<StringLiveData> { t ->
             val message = t?._text ?: ""
             if (message != "") {
                 toast(message)
@@ -43,6 +46,21 @@ class HomeActivity : AppCompatActivity() {
                 //mandar photo, nameEnterprise, description
             }
         })
+
+        binding.vm?.observables?.loadingVisibility?.observe(this, Observer { t ->
+            if(t?.enableChange == true){
+                binding.loadingProgressBarId.visibility = View.VISIBLE
+            }
+            else{
+                binding.loadingProgressBarId.visibility = View.GONE
+            }
+        })
+
+        binding.vm?.enterpriseList?.observe(this, Observer { listEnterprises ->
+            if(listEnterprises?.isEmpty() == false ){
+//                setupRecycler(listEnterprises)
+            }
+        })
         binding.executePendingBindings()
     }
 
@@ -53,8 +71,14 @@ class HomeActivity : AppCompatActivity() {
         inflater.inflate(R.menu.search_menu, menu)
 
         title = ""
-        val searchView = menu?.findItem(R.id.item_search)?.actionView as SearchView?
+        val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView?
         searchView?.queryHint = getString(R.string.search_hint)
+
+        searchView?.setOnSearchClickListener { t->
+            if(t.isActivated){
+                binding.msgTextViewId.visibility = View.GONE
+            }
+        }
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
@@ -69,6 +93,11 @@ class HomeActivity : AppCompatActivity() {
 
         })
         return result
+    }
+
+    fun setupRecycler(enterpriseList: List<Enterprise>) {
+        binding.enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
+        binding.enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
     }
 
     private fun toast(message: String) {

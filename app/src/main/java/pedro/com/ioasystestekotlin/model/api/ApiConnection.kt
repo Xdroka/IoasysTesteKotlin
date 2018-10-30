@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConnection {
     private var mRetrofit: Retrofit
     private var mService: WebService
-    var header: HeaderApi? = null
+    lateinit var header: HeaderApi
 
     init {
         mRetrofit = Retrofit.Builder()
@@ -21,57 +21,63 @@ class ApiConnection {
         mService = mRetrofit.create(WebService::class.java)
     }
 
-    fun auth(user: User, message: MutableLiveData<StringLiveData>,
-             changeActivity: MutableLiveData<EnabledChange>, buttonEnabled: MutableLiveData<EnabledChange>) {
+    fun auth(user: User, observablesFields: ObservablesFields) {
         val call = mService.authentification(user)
 
         call.enqueue(object : Callback<AuthRequest> {
             override fun onFailure(call: Call<AuthRequest>, t: Throwable) {
-                message.postValue(StringLiveData("Falha na conexão"))
-                buttonEnabled.postValue(EnabledChange(true))
+                observablesFields.message.postValue(StringLiveData(ERROR_CONNECTION))
+                observablesFields.loadingVisibility.postValue(EnabledChange())
             }
 
             override fun onResponse(call: Call<AuthRequest>, response: Response<AuthRequest>) {
-                if (response.isSuccessful) {
+                if (response.body()?.success == true) {
                     header = HeaderApi(
-                            response.headers().get("access-token"),
-                            response.headers().get("uid"),
-                            response.headers().get("client")
+                            response.headers().get("access-token") ?: "",
+                            response.headers().get("uid") ?: "",
+                            response.headers().get("client") ?: ""
                     )
-                    changeActivity.postValue(EnabledChange(true))
-                    message.postValue(StringLiveData(header?.uid.toString())) //retirar essa linha depois de testes
+                    observablesFields.changeActivity.postValue(EnabledChange(true))
                 } else {
-                    message.postValue(StringLiveData("Login Ínvalido"))
+                           observablesFields.message.postValue(StringLiveData(ERROR_LOGIN))
                 }
-                buttonEnabled.postValue(EnabledChange(true))
+                observablesFields.loadingVisibility.postValue(EnabledChange())
             }
 
         })
     }
 
-    fun searchEnterprises(enterpriseName: String, messageToast: MutableLiveData<StringLiveData>) {
-        if (header == null) return
-        val call = mService.findEnterprises(enterpriseName, header!!)
+    fun searchEnterprises(enterpriseName: String,
+                          observablesFields: ObservablesFields, enterpriseList: MutableLiveData<List<Enterprise>>) {
 
-        call.enqueue(object : Callback<List<Enterprise>> {
-            override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
-                messageToast.postValue(StringLiveData("Falha na conexão"))
+        val headerHashMap = HashMap<String,String>()
+        headerHashMap["access-token"] = header.access_token
+        headerHashMap["client"] = header.client
+        headerHashMap["uid"] = header.uid
+        val call = mService.findEnterprises(enterpriseName, headerHashMap)
+
+        call.enqueue(object : Callback<ListEnterprises> {
+            override fun onFailure(call: Call<ListEnterprises>, t: Throwable) {
+                observablesFields.message.postValue(StringLiveData(ERROR_CONNECTION))
+                observablesFields.loadingVisibility.postValue(EnabledChange())
             }
 
-            override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
-                if (!response.isSuccessful) return
-
-                messageToast.postValue(StringLiveData(response.body()?.get(0)?.enterprise_type_name ?: "fail"))
-
+            override fun onResponse(call: Call<ListEnterprises>, response: Response<ListEnterprises>) {
+                if (response.isSuccessful) {
+                    enterpriseList.postValue(response.body()?.enterprises)
+                }
+                observablesFields.loadingVisibility.postValue(EnabledChange())
             }
-
         })
+
     }
 
 
     companion object {
         const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br/"
         const val BASE_URL = "http://empresas.ioasys.com.br/api/v1/"
+        private const val ERROR_CONNECTION = "Falha na conexão"
+        private const val ERROR_LOGIN: String = "Login Ínvalido"
     }
 
 }

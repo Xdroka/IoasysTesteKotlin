@@ -6,6 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Toast
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
@@ -21,21 +22,50 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-        binding.vm?.message?.observe(this, Observer<StringLiveData> { t ->
-            val errorMessage = t?._text ?: ""
-            if (errorMessage != "" ) {
-                toast(errorMessage)
-                binding.vm?.message?.postValue(StringLiveData())
+        binding.vm?.errorLoginEmail?.observe(this, Observer<EnabledChange> { t->
+            val error = t?.enableChange
+            if(error == true){
+                binding.emailInputText.error = getString(R.string.error_invalid_email)
+            }
+            else{
+                binding.emailInputText.error = null
             }
         })
 
-        binding.vm?.changeActivity?.observe(this, Observer<EnabledChange> { t ->
+        binding.vm?.errorLoginPassword?.observe(this, Observer<EnabledChange> { t->
+            val error = t?.enableChange
+            if(error == true){
+                binding.passwordInputText.error = getString(R.string.error_invalid_password)
+            }
+            else{
+                binding.passwordInputText.error = null
+            }
+        })
+
+        binding.vm?.observables?.message?.observe(this, Observer<StringLiveData> { t ->
+            val toastMessage = t?._text ?: ""
+            if (toastMessage != "" ) {
+                toast(toastMessage)
+                binding.vm?.observables?.message?.postValue(StringLiveData())
+            }
+        })
+
+        binding.vm?.observables?.changeActivity?.observe(this, Observer<EnabledChange> { t ->
             if (t?._enableChange == true){
                 val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                intent.putExtra("token", binding.vm?.api?.header?.access_token)
-                intent.putExtra("uid", binding.vm?.api?.header?.uid)
-                intent.putExtra("client", binding.vm?.api?.header?.client)
+                intent.putExtra("token", binding.vm?.api?.header?.access_token.toString())
+                intent.putExtra("uid", binding.vm?.api?.header?.uid.toString())
+                intent.putExtra("client", binding.vm?.api?.header?.client.toString())
                 startActivity(intent)
+            }
+        })
+
+        binding.vm?.observables?.loadingVisibility?.observe(this, Observer<EnabledChange>{ t->
+            if(t?.enableChange == true){
+                binding.progressBar.visibility = View.VISIBLE
+            }
+            else{
+                binding.progressBar.visibility = View.GONE
             }
         })
 

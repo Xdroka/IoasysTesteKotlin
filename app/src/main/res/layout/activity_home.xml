@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="pedro.com.ioasystestekotlin.viewmodel.HomeViewModel" />
-
         <import type="android.view.View" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/beige"
         tools:context=".view.HomeActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -29,23 +28,26 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbarSearchId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:fitsSystemWindows="true"
                 android:theme="@style/HomeScreen"
-                android:title="">
+                android:title=""
+                app:logo="@drawable/logo_nav">
 
-                <ImageView
-                    android:id="@+id/logoImageViewId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/logo_nav"
-                    android:contentDescription="@string/logo"
-                    android:foregroundGravity="center" />
             </android.support.v7.widget.Toolbar>
-
         </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/enterpriseRecyclerViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarId"
+            tools:listitem="@layout/enterprise_list" />
 
         <TextView
             android:id="@+id/msgTextViewId"
@@ -58,7 +60,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarId" />
+            app:layout_constraintTop_toBottomOf="@+id/enterpriseRecyclerViewId" />
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBarId"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
