@@ -10,9 +10,8 @@ import android.view.View
 import android.widget.Toast
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
-import pedro.com.ioasystestekotlin.model.data.EnabledChange
-import pedro.com.ioasystestekotlin.model.data.StringLiveData
 import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
+import pedro.com.ioasystestekotlin.viewmodel.State
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,66 +23,53 @@ class LoginActivity : AppCompatActivity() {
         creatingObservers(binding)
 
         binding.executePendingBindings()
-
     }
 
     private fun creatingObservers(binding: ActivityLoginBinding) {
-        setErrorLoginListener(binding)
-        setMessageListener(binding)
-        setChangeActivityListener(binding)
-        setLoadingProgressBar(binding)
+        binding.vm?.state?.observe(this, Observer { viewState ->
+            initializingLayout(binding)
+            when (viewState?.state) {
+                State.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                State.GETTING_DATA -> {
+                    toast(viewState.data.toString())
+                }
+
+                State.SUCCESS -> {
+                    callingHomeActivity(binding)
+                }
+
+                State.FAILURE -> {
+                    if(viewState.data.equals("email")){
+                        binding.emailInputText.error = getString(R.string.error_login)
+                    }
+                    else{
+                        binding.passwordInputText.error = getString(R.string.error_invalid_password)
+                    }
+                }
+
+                State.WAITING_DATA -> {
+//                  do nothing
+                }
+            }
+        })
+
+   }
+
+    private fun initializingLayout(binding: ActivityLoginBinding) {
+        binding.progressBar.visibility = View.GONE
+        binding.emailInputText.error = null
+        binding.passwordInputText.error = null
     }
 
-    private fun setLoadingProgressBar(binding: ActivityLoginBinding) {
-        binding.vm?.observables?.loadingVisibility?.observe(this, Observer<EnabledChange> { t ->
-            if (t?.enableChange == true) {
-                binding.progressBar.visibility = View.VISIBLE
-            } else {
-                binding.progressBar.visibility = View.GONE
-            }
-        })
-    }
-
-    private fun setChangeActivityListener(binding: ActivityLoginBinding) {
-        binding.vm?.observables?.changeActivity?.observe(this, Observer<EnabledChange> { t ->
-            if (t?._enableChange == true) {
-                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                intent.putExtra("token", binding.vm?.api?.header?.access_token.toString())
-                intent.putExtra("uid", binding.vm?.api?.header?.uid.toString())
-                intent.putExtra("client", binding.vm?.api?.header?.client.toString())
-                startActivity(intent)
-            }
-        })
-    }
-
-    private fun setMessageListener(binding: ActivityLoginBinding) {
-        binding.vm?.observables?.message?.observe(this, Observer<StringLiveData> { t ->
-            val toastMessage = t?._text ?: ""
-            if (toastMessage != "") {
-                toast(toastMessage)
-                binding.vm?.observables?.message?.postValue(StringLiveData())
-            }
-        })
-    }
-
-    private fun setErrorLoginListener(binding: ActivityLoginBinding) {
-        binding.vm?.errorLoginEmail?.observe(this, Observer<EnabledChange> { t ->
-            val error = t?.enableChange
-            if (error == true) {
-                binding.emailInputText.error = getString(R.string.error_invalid_email)
-            } else {
-                binding.emailInputText.error = null
-            }
-        })
-
-        binding.vm?.errorLoginPassword?.observe(this, Observer<EnabledChange> { t ->
-            val error = t?.enableChange
-            if (error == true) {
-                binding.passwordInputText.error = getString(R.string.error_invalid_password)
-            } else {
-                binding.passwordInputText.error = null
-            }
-        })
+    private fun callingHomeActivity(binding: ActivityLoginBinding) {
+        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+        intent.putExtra("token", binding.vm!!.api.header.access_token)
+        intent.putExtra("uid", binding.vm!!.api.header.uid)
+        intent.putExtra("client", binding.vm!!.api.header.client)
+        startActivity(intent)
     }
 
     private fun toast(message: String, duration: Int = Toast.LENGTH_SHORT) {

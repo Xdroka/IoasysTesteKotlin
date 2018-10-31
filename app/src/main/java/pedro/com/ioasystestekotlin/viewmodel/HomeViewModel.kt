@@ -2,15 +2,16 @@ package pedro.com.ioasystestekotlin.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
 import pedro.com.ioasystestekotlin.model.api.ApiConnection
 import pedro.com.ioasystestekotlin.model.data.*
 
 class HomeViewModel : ViewModel() {
-    var searchField = MutableLiveData<StringLiveData>().also {
-        it.value = StringLiveData()
+    var searchField = MutableLiveData<StringObservable>().also {
+        it.value = StringObservable()
     }
-    var observables = ObservablesFields()
+    var state = MutableLiveData<ViewState<String>>().also {viewState ->
+        viewState.value = ViewState(null, State.WAITING_DATA)
+    }
     var enterpriseList = MutableLiveData<List<Enterprise>>().also { list ->
         list.value = ArrayList()
     }
@@ -23,8 +24,8 @@ class HomeViewModel : ViewModel() {
 
     fun searchListener() {
         val searchableEnterprises = searchField.value?.text ?: ""
-        observables.loadingVisibility.postValue(EnabledChange(true))
-        api.searchEnterprises(searchableEnterprises, observables, enterpriseList)
+        state.postValue(ViewState(null, State.LOADING))
+        api.searchEnterprises(searchableEnterprises, state, enterpriseList)
     }
 
 

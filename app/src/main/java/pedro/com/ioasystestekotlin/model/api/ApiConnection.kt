@@ -2,6 +2,8 @@ package pedro.com.ioasystestekotlin.model.api
 
 import android.arch.lifecycle.MutableLiveData
 import pedro.com.ioasystestekotlin.model.data.*
+import pedro.com.ioasystestekotlin.viewmodel.State
+import pedro.com.ioasystestekotlin.viewmodel.ViewState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,13 +23,12 @@ class ApiConnection {
         mService = mRetrofit.create(WebService::class.java)
     }
 
-    fun auth(user: User, observablesFields: ObservablesFields) {
+    fun auth(user: User, state: MutableLiveData<ViewState<String>>) {
         val call = mService.authentification(user)
 
         call.enqueue(object : Callback<AuthRequest> {
             override fun onFailure(call: Call<AuthRequest>, t: Throwable) {
-                observablesFields.message.postValue(StringLiveData(ERROR_CONNECTION))
-                observablesFields.loadingVisibility.postValue(EnabledChange())
+                state.postValue(ViewState(ERROR_CONNECTION, State.GETTING_DATA))
             }
 
             override fun onResponse(call: Call<AuthRequest>, response: Response<AuthRequest>) {
@@ -37,18 +38,17 @@ class ApiConnection {
                             response.headers().get("uid") ?: "",
                             response.headers().get("client") ?: ""
                     )
-                    observablesFields.changeActivity.postValue(EnabledChange(true))
+                    state.postValue(ViewState(null, State.SUCCESS))
                 } else {
-                           observablesFields.message.postValue(StringLiveData(ERROR_LOGIN))
+                    state.postValue(ViewState(ERROR_LOGIN, State.GETTING_DATA))
                 }
-                observablesFields.loadingVisibility.postValue(EnabledChange())
             }
 
         })
     }
 
     fun searchEnterprises(enterpriseName: String,
-                          observablesFields: ObservablesFields, enterpriseList: MutableLiveData<List<Enterprise>>) {
+                          state: MutableLiveData<ViewState<String>>, enterpriseList: MutableLiveData<List<Enterprise>>) {
 
         val headerHashMap = HashMap<String,String>()
         headerHashMap["access-token"] = header.access_token
@@ -58,15 +58,18 @@ class ApiConnection {
 
         call.enqueue(object : Callback<ListEnterprises> {
             override fun onFailure(call: Call<ListEnterprises>, t: Throwable) {
-                observablesFields.message.postValue(StringLiveData(ERROR_CONNECTION))
-                observablesFields.loadingVisibility.postValue(EnabledChange())
+                state.postValue(ViewState(ERROR_CONNECTION, State.GETTING_DATA))
             }
 
             override fun onResponse(call: Call<ListEnterprises>, response: Response<ListEnterprises>) {
                 if (response.isSuccessful) {
                     enterpriseList.postValue(response.body()?.enterprises)
+                    state.postValue(ViewState(null, State.SUCCESS))
                 }
-                observablesFields.loadingVisibility.postValue(EnabledChange())
+                else{
+                    state.postValue(ViewState(null, State.FAILURE))
+                }
+
             }
         })
 

@@ -5,17 +5,17 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
-import pedro.com.ioasystestekotlin.model.data.EnabledChange
-import pedro.com.ioasystestekotlin.model.data.StringLiveData
-import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
-import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import pedro.com.ioasystestekotlin.model.data.Enterprise
+import pedro.com.ioasystestekotlin.model.data.StringObservable
+import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
+import pedro.com.ioasystestekotlin.viewmodel.State
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -56,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.vm?.searchField?.value = StringLiveData(newText ?: "")
+                binding.vm?.searchField?.value = StringObservable(newText ?: "")
                 return true
             }
 
@@ -65,59 +65,43 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun creatingObservers() {
-        setMessageListenner()
-        setChangeActivityListener()
-        setLoadingProgressBar()
-        setEnterpriseListListener()
-    }
+        binding.vm?.state?.observe(this, Observer {viewState ->
 
-    private fun setEnterpriseListListener() {
-        binding.vm?.enterpriseList?.observe(this, Observer { listEnterprises ->
-            if (listEnterprises?.isEmpty() == false) {
-//                setupRecycler(listEnterprises)
+            binding.loadingProgressBarId.visibility = View.GONE
+            when(viewState?.state){
+                State.SUCCESS -> {
+                    setupRecycler(binding.vm?.enterpriseList?.value!!)
+                }
+
+                State.GETTING_DATA -> {
+                    toast(viewState.data.toString())
+                }
+
+                State.LOADING -> {
+                    binding.loadingProgressBarId.visibility = View.VISIBLE
+                }
+
+                State.FAILURE -> {
+//                    binding.enterpriseRecyclerViewId.removeAllViews()
+                }
+                else ->{
+//                    do nothing
+                }
             }
         })
     }
 
-    private fun setLoadingProgressBar() {
-        binding.vm!!.observables.loadingVisibility.observe(this, Observer { t ->
-            if (t?.enableChange == true) {
-                binding.loadingProgressBarId.visibility = View.VISIBLE
-            } else {
-                binding.loadingProgressBarId.visibility = View.GONE
-            }
-        })
-    }
-
-    private fun setChangeActivityListener() {
-        binding.vm!!.observables.changeActivity.observe(this, Observer<EnabledChange> { t ->
-            if (t?.enableChange == true) {
-                //                val intent = Intent(this@HomeActivity,)
-                //mandar photo, nameEnterprise, description
-            }
-        })
-    }
-
-    private fun setMessageListenner() {
-        binding.vm!!.observables.message.observe(this, Observer<StringLiveData> { t ->
-            val message = t?._text ?: ""
-            if (message != "") {
-                toast(message)
-            }
-        })
-    }
-
-    private fun retrievingHeaders() {
-        binding.vm!!.setHeader(
-                intent?.extras?.get("token").toString(),
-                intent?.extras?.get("uid").toString(),
-                intent?.extras?.get("client").toString()
-        )
-    }
+    private fun retrievingHeaders() = binding.vm?.setHeader(
+            intent?.extras?.get("token").toString(),
+            intent?.extras?.get("uid").toString(),
+            intent?.extras?.get("client").toString()
+    )
 
     fun setupRecycler(enterpriseList: List<Enterprise>) {
-        binding.enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
         binding.enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
+        binding.enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
+
+
     }
 
     private fun toast(message: String) {
