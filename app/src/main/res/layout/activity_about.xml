@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="pedro.com.ioasystestekotlin.viewmodel.AboutViewModel"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".view.AboutActivity">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarAboutLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbarAboutId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AboutScreen">
+
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.AppBarLayout>
+
+            <ImageView
+                android:id="@+id/image_enterprise_id"
+                android:layout_width="142dp"
+                android:layout_height="129dp"
+                android:layout_marginTop="29dp"
+                android:background="@android:drawable/ic_menu_report_image"
+                android:contentDescription="@string/logo"
+                android:onClick="@{() -> vm.reloadImage()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarAboutLayout" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@={vm.enterprise.description}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_enterprise_id"
+                tools:text="@string/loren" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>
