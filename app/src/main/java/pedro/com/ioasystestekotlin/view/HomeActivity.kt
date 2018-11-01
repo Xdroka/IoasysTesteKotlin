@@ -2,12 +2,15 @@ package pedro.com.ioasystestekotlin.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import pedro.com.ioasystestekotlin.R
@@ -29,7 +32,6 @@ class HomeActivity : AppCompatActivity() {
 
         retrievingHeaders()
         creatingObservers()
-
         binding.executePendingBindings()
     }
 
@@ -40,16 +42,11 @@ class HomeActivity : AppCompatActivity() {
         inflater.inflate(R.menu.search_menu, menu)
 
         title = ""
-        val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView?
-        searchView?.queryHint = getString(R.string.search_hint)
+        val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView
+        searchView.queryHint = getString(R.string.search_hint)
+        binding.msgTextViewId.visibility = View.GONE
 
-        searchView?.setOnSearchClickListener { t ->
-            if (t.isActivated) {
-                binding.msgTextViewId.visibility = View.GONE
-            }
-        }
-
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
                 binding.vm?.searchListener()
                 return true
@@ -73,17 +70,15 @@ class HomeActivity : AppCompatActivity() {
                     setupRecycler(binding.vm?.enterpriseList?.value!!)
                 }
 
-                State.GETTING_DATA -> {
-                    toast(viewState.data.toString())
-                }
-
                 State.LOADING -> {
                     binding.loadingProgressBarId.visibility = View.VISIBLE
                 }
 
                 State.FAILURE -> {
+                    toast(viewState.data.toString())
 //                    binding.enterpriseRecyclerViewId.removeAllViews()
                 }
+
                 else ->{
 //                    do nothing
                 }
@@ -97,11 +92,9 @@ class HomeActivity : AppCompatActivity() {
             intent?.extras?.get("client").toString()
     )
 
-    fun setupRecycler(enterpriseList: List<Enterprise>) {
+    private fun setupRecycler(enterpriseList: List<Enterprise>) {
         binding.enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
         binding.enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
-
-
     }
 
     private fun toast(message: String) {

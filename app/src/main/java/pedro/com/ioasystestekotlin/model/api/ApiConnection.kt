@@ -58,7 +58,7 @@ class ApiConnection {
 
         call.enqueue(object : Callback<ListEnterprises> {
             override fun onFailure(call: Call<ListEnterprises>, t: Throwable) {
-                state.postValue(ViewState(ERROR_CONNECTION, State.GETTING_DATA))
+                state.postValue(ViewState(ERROR_CONNECTION, State.FAILURE))
             }
 
             override fun onResponse(call: Call<ListEnterprises>, response: Response<ListEnterprises>) {
@@ -67,7 +67,7 @@ class ApiConnection {
                     state.postValue(ViewState(null, State.SUCCESS))
                 }
                 else{
-                    state.postValue(ViewState(null, State.FAILURE))
+                    state.postValue(ViewState(null, State.WAITING_DATA))
                 }
 
             }
@@ -75,12 +75,11 @@ class ApiConnection {
 
     }
 
-
     companion object {
         const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br/"
         const val BASE_URL = "http://empresas.ioasys.com.br/api/v1/"
         private const val ERROR_CONNECTION = "Falha na conexão"
-        private const val ERROR_LOGIN: String = "Login Ínvalido"
+        private const val ERROR_LOGIN = "Login Ínvalido"
     }
 
 }

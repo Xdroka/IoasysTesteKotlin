@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import pedro.com.ioasystestekotlin.databinding.EnterpriseListBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
+import pedro.com.ioasystestekotlin.model.util.ImageUtil
 
 class EnterprisesAdapter(var enterpriseList: List<Enterprise>?
 ) : RecyclerView.Adapter<EnterpriseViewHolder>() {
@@ -29,6 +30,13 @@ class EnterprisesAdapter(var enterpriseList: List<Enterprise>?
         holder.binding.item?.enterprise?.value?._country = enterprise.country
         holder.binding.item?.enterprise?.value?._bussiness = enterprise.enterprise_type
 
+        if (enterprise.photo != null) {
+            ImageUtil.downloadPhoto(
+                    holder.binding.root.context,
+                    holder.binding.imageView,
+                    enterprise.photo ?: ""
+            )
+        }
 
     }
 
