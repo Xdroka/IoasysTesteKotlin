@@ -13,6 +13,7 @@ import android.view.Menu
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_home.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
@@ -93,8 +94,8 @@ class HomeActivity : AppCompatActivity() {
     )
 
     private fun setupRecycler(enterpriseList: List<Enterprise>) {
-        binding.enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
-        binding.enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
+        enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
+        enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
     }
 
     private fun toast(message: String) {

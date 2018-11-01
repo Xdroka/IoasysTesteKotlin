@@ -14,7 +14,7 @@ data class Enterprise(
         @Bindable
         get() = enterprise_name
         set(value) {
-            enterprise_name = value
+            this.enterprise_name = value
             notifyChange()
         }
 
@@ -39,6 +39,14 @@ data class Enterprise(
     get() = enterprise_type
     set(value) {
         enterprise_type = value
+        notifyChange()
+    }
+
+    var _photo
+    @Bindable
+    get() = photo
+    set(value){
+        photo = value
         notifyChange()
     }
 }

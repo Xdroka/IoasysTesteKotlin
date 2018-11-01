@@ -7,12 +7,16 @@ class AboutViewModel(enterpriseArgument: Enterprise) {
     var enterprise = MutableLiveData<Enterprise>().also {
         it.value = enterpriseArgument
     }
-    var reload = MutableLiveData<Boolean>().also {
-        it.value = false
+    var viewState = MutableLiveData<ViewState<String>>().also {
+        it.value = ViewState(null, State.WAITING_DATA)
     }
 
-    fun reloadImage() {
-        reload.postValue(enterprise.value?.photo != null)
+    fun loadImage() {
+        if (enterprise.value?.photo == null) {
+            viewState.postValue(ViewState(null, State.FAILURE))
+            return
+        }
+        viewState.postValue(ViewState(enterprise.value?.photo, State.GETTING_DATA))
     }
 
 }
