@@ -45,7 +45,6 @@ class HomeActivity : AppCompatActivity() {
         title = ""
         val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView
         searchView.queryHint = getString(R.string.search_hint)
-        binding.msgTextViewId.visibility = View.GONE
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
@@ -55,6 +54,7 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 binding.vm?.searchField?.value = StringObservable(newText ?: "")
+                msgTextViewId.visibility = View.GONE
                 return true
             }
 

@@ -12,6 +12,7 @@ class ImageUtil {
             Glide.with(context)
                     .load(ApiConnection.BASE_URL_PHOTO + photoUrl)
                     .placeholder(R.drawable.loading)
+                    .error(R.drawable.imageReport)
                     .into(image)
         }
     }

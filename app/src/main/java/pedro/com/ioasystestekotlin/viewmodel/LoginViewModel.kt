@@ -25,26 +25,15 @@ class LoginViewModel : ViewModel() {
         val isEmail = UtilsData.isEmail(email)
         val isPassword = UtilsData.isPassword(password)
 
-        state.postValue(
-                if (isEmail && isPassword) {
-                    ViewState<String>(null, State.WAITING_DATA)
-                } else {
-                    when (isEmail) {
-                        true -> ViewState("password", State.FAILURE)
-                        false -> ViewState("email", State.FAILURE)
-                    }
-                }
-        )
-
-        if (state.value?.state == State.LOADING) {
-            return
-        }
-
         if (isEmail && isPassword) {
             state.postValue(ViewState(null, State.LOADING))
             api.auth(User(email, password), state)
+            return
         }
+        when (isEmail) {
+            true -> state.postValue(ViewState("password", State.FAILURE))
+            false -> state.postValue(ViewState("email", State.FAILURE))
+        }
+
     }
 }
-
-

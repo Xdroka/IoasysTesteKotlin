@@ -76,7 +76,7 @@ class ApiConnection {
     }
 
     companion object {
-        const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br/"
+        const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br"
         const val BASE_URL = "http://empresas.ioasys.com.br/api/v1/"
         private const val ERROR_CONNECTION = "Falha na conexão"
         private const val ERROR_LOGIN = "Login Ínvalido"

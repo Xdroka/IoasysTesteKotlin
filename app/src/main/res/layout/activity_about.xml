@@ -5,10 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
-            type="pedro.com.ioasystestekotlin.viewmodel.AboutViewModel"/>
-        <import type="android.view.View"/>
+            type="pedro.com.ioasystestekotlin.viewmodel.AboutViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <ScrollView
@@ -39,13 +41,13 @@
                 android:layout_width="142dp"
                 android:layout_height="129dp"
                 android:layout_marginTop="29dp"
-                android:background="@android:drawable/ic_menu_report_image"
                 android:contentDescription="@string/logo"
                 android:onClick="@{() -> vm.loadImage()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBarAboutLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/appBarAboutLayout"
+                tools:background="@android:drawable/ic_menu_report_image" />
 
             <TextView
                 android:id="@+id/textView"
