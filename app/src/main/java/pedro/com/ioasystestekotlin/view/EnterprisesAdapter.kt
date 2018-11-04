@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.EnterpriseListBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
-import pedro.com.ioasystestekotlin.model.util.ImageUtil
+import pedro.com.ioasystestekotlin.model.util.downloadPhoto
 
-class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?
+class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
+                         private val listener: OnItemAdapterClickListener<Enterprise>
 ) : RecyclerView.Adapter<EnterpriseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnterpriseViewHolder {
@@ -17,7 +18,7 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?
         return EnterpriseViewHolder(binding)
     }
 
-    override fun getItemCount()= enterpriseList?.size ?: 0
+    override fun getItemCount() = enterpriseList?.size ?: 0
 
 
     override fun onBindViewHolder(holder: EnterpriseViewHolder, position: Int) {
@@ -33,17 +34,24 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?
             _photo = enterprise.photo
         }
 
+        holder.binding.CardView.setOnClickListener{
+            listener.onItemClick(enterprise)
+        }
+
         enterprise.photo?.let {
-            ImageUtil.downloadPhoto(
+            holder.binding.imageView.downloadPhoto(
                     holder.binding.root.context,
-                    holder.binding.imageView,
                     it
             )
         }
 
-        if (enterprise.photo == null){
+        if (enterprise.photo == null) {
             holder.binding.imageView.setImageResource(R.drawable.imageReport)
         }
     }
 
+}
+
+interface OnItemAdapterClickListener<T> {
+    fun onItemClick(t: T)
 }

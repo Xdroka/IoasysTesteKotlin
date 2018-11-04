@@ -21,7 +21,9 @@ import pedro.com.ioasystestekotlin.model.data.StringObservable
 import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise> {
+
+
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +65,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun creatingObservers() {
-        binding.vm?.state?.observe(this, Observer {viewState ->
+        binding.vm?.state?.observe(this, Observer { viewState ->
 
             binding.loadingProgressBarId.visibility = View.GONE
-            when(viewState?.state){
+            when (viewState?.state) {
                 State.SUCCESS -> {
                     setupRecycler(binding.vm?.enterpriseList?.value!!)
                 }
@@ -77,10 +79,9 @@ class HomeActivity : AppCompatActivity() {
 
                 State.FAILURE -> {
                     toast(viewState.data.toString())
-//                    binding.enterpriseRecyclerViewId.removeAllViews()
                 }
 
-                else ->{
+                else -> {
 //                    do nothing
                 }
             }
@@ -94,12 +95,20 @@ class HomeActivity : AppCompatActivity() {
     )
 
     private fun setupRecycler(enterpriseList: List<Enterprise>) {
-        enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList)
         enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
+        enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList, this)
     }
 
     private fun toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClick(t: Enterprise) {
+        val intent = Intent(this, AboutActivity::class.java)
+        intent.putExtra("description", t.description)
+        intent.putExtra("photo", t.photo)
+        intent.putExtra("enterpriseName", t.enterprise_name)
+        startActivity(intent)
     }
 
 }

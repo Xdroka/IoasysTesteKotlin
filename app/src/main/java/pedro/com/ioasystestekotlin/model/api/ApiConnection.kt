@@ -75,6 +75,11 @@ class ApiConnection {
 
     }
 
+    fun doLogin(onSuccess: () -> Unit, onFailure: () -> Unit) {
+//        mService.authentification()
+//                .
+    }
+
     companion object {
         const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br"
         const val BASE_URL = "http://empresas.ioasys.com.br/api/v1/"

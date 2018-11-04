@@ -29,6 +29,7 @@
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbarAboutId"
+                    app:navigationIcon="@drawable/ic_arrow_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/AboutScreen">
@@ -41,6 +42,7 @@
                 android:layout_width="142dp"
                 android:layout_height="129dp"
                 android:layout_marginTop="29dp"
+                android:scaleType="fitXY"
                 android:contentDescription="@string/logo"
                 android:onClick="@{() -> vm.loadImage()}"
                 app:layout_constraintEnd_toEndOf="parent"

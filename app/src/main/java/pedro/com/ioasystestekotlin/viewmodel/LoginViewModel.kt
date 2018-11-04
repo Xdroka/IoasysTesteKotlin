@@ -4,16 +4,17 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import pedro.com.ioasystestekotlin.model.api.ApiConnection
 import pedro.com.ioasystestekotlin.model.data.User
-import pedro.com.ioasystestekotlin.model.util.UtilsData
+import pedro.com.ioasystestekotlin.model.util.validatingEmail
+import pedro.com.ioasystestekotlin.model.util.validatingPassword
 
 class LoginViewModel : ViewModel() {
+    var api: ApiConnection = ApiConnection()
     var user = MutableLiveData<User>().also {
         it.value = User()
     }
     var state = MutableLiveData<ViewState<String>>().also { state ->
         state.value = ViewState(null, State.WAITING_DATA)
     }
-    var api: ApiConnection = ApiConnection()
 
     init {
         api.auth(User("testeapple@ioasys.com.br", "12341234"), state)
@@ -22,8 +23,8 @@ class LoginViewModel : ViewModel() {
     fun onClick() {
         val email = user.value?._email ?: ""
         val password = user.value?._password ?: ""
-        val isEmail = UtilsData.isEmail(email)
-        val isPassword = UtilsData.isPassword(password)
+        val isEmail = email.validatingEmail()
+        val isPassword = password.validatingPassword()
 
         if (isEmail && isPassword) {
             state.postValue(ViewState(null, State.LOADING))
@@ -35,5 +36,15 @@ class LoginViewModel : ViewModel() {
             false -> state.postValue(ViewState("email", State.FAILURE))
         }
 
+
+        api.doLogin(
+                onSuccess = {
+
+                },
+                onFailure = {
+
+                }
+
+        )
     }
 }
