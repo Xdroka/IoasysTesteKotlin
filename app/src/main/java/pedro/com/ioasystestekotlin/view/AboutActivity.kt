@@ -14,7 +14,7 @@ import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
 import pedro.com.ioasystestekotlin.model.util.downloadPhoto
 import pedro.com.ioasystestekotlin.viewmodel.AboutViewModel
-import pedro.com.ioasystestekotlin.viewmodel.State
+import pedro.com.ioasystestekotlin.viewmodel.Status
 
 class AboutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutBinding
@@ -69,8 +69,8 @@ class AboutActivity : AppCompatActivity() {
     private fun creatingObserver(binding: ActivityAboutBinding) {
 
         binding.vm?.viewState?.observe(this, Observer { viewState ->
-            when (viewState?.state) {
-                State.GETTING_DATA -> {
+            when (viewState?.status) {
+                Status.GETTING_DATA -> {
                     binding.imageEnterpriseId.downloadPhoto(
                             this,
                             viewState.data!!,
@@ -78,11 +78,11 @@ class AboutActivity : AppCompatActivity() {
                     )
                 }
 
-                State.FAILURE -> {
+                Status.FAILURE -> {
                     binding.imageEnterpriseId.setImageResource(R.drawable.imageReport)
                 }
 
-                State.LOADING -> {
+                Status.LOADING -> {
                     toast(viewState.data.toString())
                 }
 

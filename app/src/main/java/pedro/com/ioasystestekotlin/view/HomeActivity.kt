@@ -7,10 +7,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
@@ -19,7 +17,7 @@ import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
 import pedro.com.ioasystestekotlin.model.data.StringObservable
 import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
-import pedro.com.ioasystestekotlin.viewmodel.State
+import pedro.com.ioasystestekotlin.viewmodel.Status
 
 class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise> {
 
@@ -68,16 +66,16 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise>
         binding.vm?.state?.observe(this, Observer { viewState ->
 
             binding.loadingProgressBarId.visibility = View.GONE
-            when (viewState?.state) {
-                State.SUCCESS -> {
+            when (viewState?.status) {
+                Status.SUCCESS -> {
                     setupRecycler(binding.vm?.enterpriseList?.value!!)
                 }
 
-                State.LOADING -> {
+                Status.LOADING -> {
                     binding.loadingProgressBarId.visibility = View.VISIBLE
                 }
 
-                State.FAILURE -> {
+                Status.FAILURE -> {
                     toast(viewState.data.toString())
                 }
 

@@ -2,77 +2,83 @@ package pedro.com.ioasystestekotlin.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_login.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
+import pedro.com.ioasystestekotlin.model.data.HeaderApi
+import pedro.com.ioasystestekotlin.model.util.toast
 import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
-import pedro.com.ioasystestekotlin.viewmodel.State
+import pedro.com.ioasystestekotlin.viewmodel.Status
 
 class LoginActivity : AppCompatActivity() {
+
+    private val viewModel: LoginViewModel by lazy {
+        ViewModelProviders.of(this).get(LoginViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        creatingObservers(binding)
-
+        val binding: ActivityLoginBinding = DataBindingUtil
+                .setContentView(this, R.layout.activity_login)
+        binding.vm = viewModel
+        lifecycle.addObserver(viewModel)
+        creatingObservers()
         binding.executePendingBindings()
     }
 
-    private fun creatingObservers(binding: ActivityLoginBinding) {
-        binding.vm?.state?.observe(this, Observer { viewState ->
-            initializingLayout(binding)
-            when (viewState?.state) {
-                State.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
+    private fun creatingObservers() {
+        viewModel.getState().observe(this, Observer { viewState ->
+            initializingLayout()
 
-                State.GETTING_DATA -> {
-                    toast(viewState.data.toString())
-                }
-
-                State.SUCCESS -> {
-                    callingHomeActivity(binding)
-                }
-
-                State.FAILURE -> {
-                    if (viewState.data.equals("email")) {
-                        binding.emailInputText.error = getString(R.string.error_login)
-                    } else {
-                        binding.passwordInputText.error = getString(R.string.error_invalid_password)
+            when (viewState?.status) {
+                Status.SUCCESS -> {
+                    viewState.data?.let {
+                        startHomeActivity(it)
                     }
                 }
 
-                State.WAITING_DATA -> {
-//                  do nothing
+                Status.FAILURE -> {
+                    viewState.throwable?.let {
+                        toast(it.message ?: "Erro desconhecido")
+                    }
                 }
+
+                Status.LOADING -> {
+                    progressBar.visibility = View.VISIBLE
+                    sigin_button.isEnabled = false
+                }
+
+                else -> {
+
+                }
+
             }
         })
 
     }
 
-    private fun initializingLayout(binding: ActivityLoginBinding) {
-        binding.progressBar.visibility = View.GONE
-        binding.emailInputText.error = null
-        binding.passwordInputText.error = null
+    private fun initializingLayout() {
+        progressBar.visibility = View.GONE
+        emailInputLayout.error = null
+        passwordInputLayout.error = null
     }
 
-    private fun callingHomeActivity(binding: ActivityLoginBinding) {
+    private fun startHomeActivity(header: HeaderApi) {
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-        intent.putExtra("token", binding.vm!!.api.header.access_token)
-        intent.putExtra("uid", binding.vm!!.api.header.uid)
-        intent.putExtra("client", binding.vm!!.api.header.client)
+        intent.putExtra("token", header.access_token)
+        intent.putExtra("uid", header.uid)
+        intent.putExtra("client", header.client)
         startActivity(intent)
+        finish()
+
     }
 
-    private fun toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, message, duration).show()
-    }
 }
