@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/welcomeTextViewId" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/emailInputLayout2"
+                android:id="@+id/emailInputLayout"
                 android:layout_width="257dp"
                 android:layout_height="62dp"
                 android:layout_marginTop="40dp"
@@ -94,10 +94,10 @@
                 android:layout_width="254dp"
                 android:layout_height="64dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/emailInputLayout2"
+                app:layout_constraintEnd_toEndOf="@+id/emailInputLayout"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/emailInputLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/emailInputLayout2"
+                app:layout_constraintStart_toStartOf="@+id/emailInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/colorPrimary">
 
@@ -122,7 +122,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@color/greeny_blue"
-                android:onClick="@{() -> vm.onClick()}"
+                android:onClick="@{() -> vm.onLoginClick()}"
                 android:text="@string/siggin_button"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"

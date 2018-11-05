@@ -9,10 +9,10 @@ class EnterpriseListViewModel : ViewModel() {
         it.value = Enterprise()
     }
     var viewState = MutableLiveData<ViewState<Enterprise>>().also {
-        it.value = ViewState(Enterprise(), State.WAITING_DATA)
+//        it.value = ViewState(Enterprise(), Status.WAITING_DATA)
     }
 
     fun onClickItem(){
-        viewState.postValue(ViewState(enterprise.value, State.SUCCESS))
+//        viewState.postValue(ViewState(enterprise.value, Status.SUCCESS))
     }
 }

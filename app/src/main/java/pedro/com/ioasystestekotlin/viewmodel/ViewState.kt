@@ -1,20 +1,29 @@
 package pedro.com.ioasystestekotlin.viewmodel
 
 class ViewState<T>(
+        val status: Status,
         val data: T?,
-        val state: State,
         val throwable: Throwable? = null) {
 
     companion object {
-        fun <T>success(t: T) = ViewState(t, State.SUCCESS, null)
-        fun <T: Throwable>failure(t: T) = ViewState(null, State.FAILURE, t)
-        fun loading() = ViewState(null, State.LOADING, null)
-    }
 
+        fun <T> success(data: T? = null): ViewState<T> {
+            return ViewState(Status.SUCCESS, data, null)
+        }
+
+        fun <T> error(error: Throwable?): ViewState<T> {
+            return ViewState(Status.FAILURE, null, error)
+        }
+
+        fun <T> loading(): ViewState<T> {
+            return ViewState(Status.LOADING, null, null)
+        }
+
+    }
 
 }
 
-enum class State{
+enum class Status{
     WAITING_DATA,
     GETTING_DATA,
     LOADING,
