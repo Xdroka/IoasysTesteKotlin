@@ -51,7 +51,3 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
     }
 
 }
-
-interface OnItemAdapterClickListener {
-    fun onItemClick(enterprise: Enterprise)
-}

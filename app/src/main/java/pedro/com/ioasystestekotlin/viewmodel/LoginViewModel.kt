@@ -24,34 +24,40 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
     private var loginSubscribe: LoginSubscriber? = null
 
     fun onClick() {
+        teste()
         val email = user.value?._email ?: ""
         val password = user.value?._password ?: ""
         val isEmail = email.validateEmail()
         val isPassword = password.validatePassword()
 
-        if (!(isEmail && isPassword)) {
-            when (isEmail) {
-                true -> state.postValue(ViewState.failure(Exception("passwordInvalid")))
-                false -> state.postValue(ViewState.failure(Exception("emailInvalid")))
-            }
+        if (isEmail && isPassword) {
 
+            state.postValue(ViewState.loading())
+
+            loginSubscribe = repository
+                    .authentication(User(email, password))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(LoginSubscriber())
             return
         }
 
-        state.postValue(ViewState.loading())
-
-        loginSubscribe = repository
-                .authentication(User(email, password))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(LoginSubscriber())
+        when (isEmail) {
+            true -> state.postValue(ViewState.failure(Exception("passwordInvalid")))
+            false -> {
+//                    if(isPassword)
+                state.postValue(ViewState.failure(Exception("emailInvalid")))
+//                    else
+//                        state.postValue(ViewState.failure(Exception("bothInvalid")))
+            }
+        }
     }
 
     inner class LoginSubscriber : DisposableObserver<Response<AuthRequest>>() {
         override fun onComplete() {}
 
         override fun onNext(response: Response<AuthRequest>) {
-            if(response.body()?.success != true) {
+            if (response.body()?.success != true) {
                 state.postValue(ViewState.failure(java.lang.Exception("loginInvalid")))
                 return
             }
@@ -77,16 +83,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
 
     fun getState() = state
 
-    //remove that
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun fillForm() {
+    fun teste(){
         user.value?._email = "testeapple@ioasys.com.br"
         user.value?._password = "12341234"
-        onClick()
     }
 
     override fun onCleared() {
-        super.onCleared()
         loginSubscribe?.dispose()
+        super.onCleared()
     }
 }

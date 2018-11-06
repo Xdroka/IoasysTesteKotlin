@@ -7,27 +7,36 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_about.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
 import pedro.com.ioasystestekotlin.util.downloadPhoto
+import pedro.com.ioasystestekotlin.util.toast
 import pedro.com.ioasystestekotlin.viewmodel.AboutViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
 class AboutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutBinding
+    private val viewModel: AboutViewModel by lazy {
+        ViewModelProviders.of(this)
+                .get(AboutViewModel::class.java).also { vm ->
+                    vm.setEnterprise(getBundleEnterprise())
+
+                    image_enterprise_id.downloadPhoto(
+                            this,
+                            vm.enterprise.value?.photo ?: "",
+                            true
+                    )
+                }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_about)
-//        binding.vm = AboutViewModel(getBundleEnterprise())
-        binding.vm = ViewModelProviders.of(this).get(AboutViewModel::class.java).also { vm ->
-            vm.setEnterprise(getBundleEnterprise())
-        }
+        binding.vm = viewModel
 
         setSupportActionBar(toolbarAboutId)
 
@@ -52,7 +61,7 @@ class AboutActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.about_menu, menu)
-        title = binding.vm?.enterprise?.value?.enterprise_name
+        title = viewModel.enterprise.value?.enterprise_name
 
         return true
     }
@@ -68,7 +77,7 @@ class AboutActivity : AppCompatActivity() {
 
     private fun creatingObserver(binding: ActivityAboutBinding) {
 
-        binding.vm?.viewState?.observe(this, Observer { viewState ->
+        viewModel.viewState.observe(this, Observer { viewState ->
             when (viewState?.state) {
                 State.GETTING_DATA -> {
                     binding.imageEnterpriseId.downloadPhoto(
@@ -92,9 +101,5 @@ class AboutActivity : AppCompatActivity() {
             }
         })
 
-    }
-
-    private fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

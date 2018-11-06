@@ -11,4 +11,3 @@ fun String.validateEmail(): Boolean {
     val pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE)
     return pattern.matcher(this).find()
 }
-

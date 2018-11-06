@@ -10,13 +10,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.View
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
 import pedro.com.ioasystestekotlin.model.data.StringObservable
-import pedro.com.ioasystestekotlin.util.getHeader
 import pedro.com.ioasystestekotlin.util.toast
 import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
@@ -82,7 +80,9 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
                 }
 
                 State.FAILURE -> {
-                    toast(viewState.data.toString())
+                    viewState.throwable?.message?.let {
+                        toast(it)
+                    }
                 }
 
                 else -> {

@@ -43,15 +43,14 @@ class HomeViewModel(aplication: Application) : AndroidViewModel(aplication) {
 
         override fun onNext(response: Response<ListEnterprises>) {
             if (!response.isSuccessful) {
-                state.postValue(ViewState.failure(Exception("")))
+                state.postValue(ViewState.failure(Exception("HTTP: ${response.code()} - ${response.message()} ")))
                 return
             }
 
             response.body()?.enterprises?.let {list ->
                 state.postValue(ViewState.success(list))
-                return
             }
-            state.postValue(ViewState.success(listOf(Enterprise())))
+//            state.postValue(ViewState.success(listOf(Enterprise())))
         }
 
         override fun onError(exception: Throwable) {

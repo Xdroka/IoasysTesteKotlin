@@ -51,18 +51,27 @@ class LoginActivity : AppCompatActivity() {
                 State.FAILURE -> {
                     val errorMessage = viewState.throwable?.message
 
-                    when(errorMessage) {
-                        "emailInvalid" ->
-                            emailInputText.error = getString(R.string.error_invalid_email)
+                    when (errorMessage) {
+                        "emailInvalid" -> {
+                            invalidEmail()
+                        }
 
-                        "passwordInvalid" ->
-                            passwordInputText.error = getString(R.string.error_invalid_password)
+                        "passwordInvalid" -> {
+                            invalidPassword()
+                        }
 
-                        "loginInvalid" ->
+                        "bothInvalid" -> {
+                            invalidEmail()
+                            invalidPassword()
+                        }
+
+                        "loginInvalid" -> {
                             toast(getString(R.string.invalid_login))
+                        }
 
-                        else ->
+                        else -> {
                             toast(getString(R.string.error_connectior))
+                        }
                     }
                 }
 
@@ -73,6 +82,14 @@ class LoginActivity : AppCompatActivity() {
 
         })
 
+    }
+
+    private fun invalidPassword() {
+        passwordInputText.error = getString(R.string.error_invalid_password)
+    }
+
+    private fun invalidEmail() {
+        emailInputText.error = getString(R.string.error_invalid_email)
     }
 
     private fun initializingLayout() {

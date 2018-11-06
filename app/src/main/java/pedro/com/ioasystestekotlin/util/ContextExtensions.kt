@@ -19,11 +19,13 @@ fun Context.getHeader(): HeaderApi {
     val sharedPreference = this.getSharedPreferences(
             "headers", 0
     )
-    return HeaderApi(
+    val header = HeaderApi(
             sharedPreference.getString("token", "") ?: "",
             sharedPreference.getString("uid", "") ?: "",
             sharedPreference.getString("client", "") ?: ""
     )
+    toast(header.uid)
+    return header
 }
 
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) =

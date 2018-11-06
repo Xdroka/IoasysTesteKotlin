@@ -17,16 +17,15 @@ class RemoteData : RemoteDataInterface {
             : Observable<Response<AuthRequest>> = mservice.authentication(user).toObservable()
 
     override fun searchEnterprises(queryName: String,
-                                   headerApi: HeaderApi): Observable<Response<ListEnterprises>> =
-            mservice.searchEnterprise(queryName,
-                                      hashMapOf(
-                                                "access-tokne" to headerApi.access_token,
-                                                "uid" to headerApi.uid,
-                                                "client" to headerApi.client
-                                                )
-            ).toObservable()
+                                   headerApi: HeaderApi): Observable<Response<ListEnterprises>> {
+        val headerHashMap = HashMap<String,String>()
+        headerHashMap["access-token"] = headerApi.access_token
+        headerHashMap["client"] = headerApi.client
+        headerHashMap["uid"] = headerApi.uid
 
+        return   mservice.searchEnterprise(queryName, headerHashMap).toObservable()
 
+    }
 }
 
 inline fun <reified T> createWebService(): T = Retrofit
