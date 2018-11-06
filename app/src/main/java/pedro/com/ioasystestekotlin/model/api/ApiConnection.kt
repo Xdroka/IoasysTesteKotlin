@@ -1,15 +1,5 @@
 package pedro.com.ioasystestekotlin.model.api
 
-import android.arch.lifecycle.MutableLiveData
-import pedro.com.ioasystestekotlin.model.data.*
-import pedro.com.ioasystestekotlin.viewmodel.State
-import pedro.com.ioasystestekotlin.viewmodel.ViewState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-
 class ApiConnection {
 //    private var mRetrofit: Retrofit
 //    private var mService: WebService
@@ -24,7 +14,7 @@ class ApiConnection {
 //    }
 //
 //    fun auth(user: User, state: MutableLiveData<ViewState<HeaderApi>>) {
-//        val call = mService.authentification(user)
+//        val call = mService.authentication(user)
 //
 //        call.enqueue(object : Callback<AuthRequest> {
 //            override fun onFailure(call: Call<AuthRequest>, t: Throwable) {

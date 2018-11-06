@@ -12,7 +12,7 @@ import retrofit2.http.*
 interface WebService {
 /*
     @POST("users/auth/sign_in")
-    fun authentification(@Body user: User): Call<AuthRequest>
+    fun authentication(@Body user: User): Call<AuthRequest>
 
     @GET("enterprises")
     fun findEnterprises(@Query("name") nameSearchable: String,
