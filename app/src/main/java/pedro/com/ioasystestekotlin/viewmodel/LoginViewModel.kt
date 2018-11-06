@@ -48,9 +48,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
     }
 
     inner class LoginSubscriber : DisposableObserver<Response<AuthRequest>>() {
-        override fun onComplete() {
-
-        }
+        override fun onComplete() {}
 
         override fun onNext(response: Response<AuthRequest>) {
             if(response.body()?.success != true) {
