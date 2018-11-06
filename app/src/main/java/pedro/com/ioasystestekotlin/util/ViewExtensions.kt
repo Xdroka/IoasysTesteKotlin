@@ -8,8 +8,8 @@ import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.model.api.WebService
 
 
-fun ImageView.downloadPhoto(context: Context, photoUrl: String, aboutScreen: Boolean = false) {
-    val imageFailure = if (aboutScreen) {
+fun ImageView.downloadPhoto(context: Context, photoUrl: String) {
+    val imageFailure = if (photoUrl != "") {
         R.drawable.download_icon
     } else {
         R.drawable.imageReport

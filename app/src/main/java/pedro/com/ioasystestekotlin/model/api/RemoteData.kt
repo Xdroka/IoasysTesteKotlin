@@ -11,10 +11,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteData : RemoteDataInterface {
-    var mservice: WebService = createWebService()
+    private var mService: WebService = createWebService()
 
     override fun authentication(user: User)
-            : Observable<Response<AuthRequest>> = mservice.authentication(user).toObservable()
+            : Observable<Response<AuthRequest>> = mService.authentication(user).toObservable()
 
     override fun searchEnterprises(queryName: String,
                                    headerApi: HeaderApi): Observable<Response<ListEnterprises>> {
@@ -23,7 +23,7 @@ class RemoteData : RemoteDataInterface {
         headerHashMap["client"] = headerApi.client
         headerHashMap["uid"] = headerApi.uid
 
-        return   mservice.searchEnterprise(queryName, headerHashMap).toObservable()
+        return   mService.searchEnterprise(queryName, headerHashMap).toObservable()
 
     }
 }

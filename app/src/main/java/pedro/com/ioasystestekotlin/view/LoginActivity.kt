@@ -16,7 +16,7 @@ import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
 class LoginActivity : AppCompatActivity() {
-    private val viewModel: LoginViewModel by lazy {
+    private val mViewModel: LoginViewModel by lazy {
         ViewModelProviders.of(this).get(LoginViewModel::class.java)
     }
 
@@ -24,14 +24,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.vm = viewModel
+        binding.vm = mViewModel
         creatingObservers()
 
         binding.executePendingBindings()
     }
 
     private fun creatingObservers() {
-        viewModel.getState().observe(this, Observer { viewState ->
+        mViewModel.getState().observe(this, Observer { viewState ->
             initializingLayout()
 
             Log.e("FEED", viewState.toString())

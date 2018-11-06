@@ -40,25 +40,8 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/enterpriseRecyclerViewId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:fitsSystemWindows="true"
-            android:persistentDrawingCache="animation"
-            android:scrollbars="vertical"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarId"
-            tools:listitem="@layout/enterprise_list" />
-
         <TextView
-            android:id="@+id/msgTextViewId"
+            android:id="@+id/msgTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/msg_intro_home"
@@ -70,8 +53,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enterpriseRecyclerViewId" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/enterpriseRecyclerViewId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:foregroundGravity="top"
+            android:persistentDrawingCache="animation"
+            android:scrollbars="vertical"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarId"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/enterprise_list" />
+
         <ProgressBar
-            android:id="@+id/loadingProgressBarId"
+            android:id="@+id/loadingProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -17,17 +17,10 @@ import pedro.com.ioasystestekotlin.viewmodel.AboutViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
 class AboutActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAboutBinding
-    private val viewModel: AboutViewModel by lazy {
+    private val mViewModel: AboutViewModel by lazy {
         ViewModelProviders.of(this)
-                .get(AboutViewModel::class.java).also { vm ->
-                    vm.setEnterprise(getBundleEnterprise())
-
-                    image_enterprise_id.downloadPhoto(
-                            this,
-                            vm.enterprise.value?.photo ?: "",
-                            true
-                    )
+                .get(AboutViewModel::class.java).also { aboutViewModel ->
+                    aboutViewModel.setEnterprise(getBundleEnterprise())
                 }
     }
 
@@ -35,8 +28,9 @@ class AboutActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_about)
-        binding.vm = viewModel
+        val binding: ActivityAboutBinding = DataBindingUtil
+                .setContentView(this, R.layout.activity_about)
+        binding.vm = mViewModel
 
         setSupportActionBar(toolbarAboutId)
 
@@ -45,24 +39,23 @@ class AboutActivity : AppCompatActivity() {
             it.setDisplayShowHomeEnabled(true)
         }
 
-        creatingObserver(binding)
+        creatingObserver()
         binding.executePendingBindings()
 
     }
 
-    private fun getBundleEnterprise(): Enterprise {
-        return Enterprise(
-                enterprise_name = intent.extras?.getString("enterpriseName"),
-                description = intent.extras?.getString("description"),
-                photo = intent.extras?.getString("photo")
-        )
-    }
+    private fun getBundleEnterprise(): Enterprise =
+            Enterprise(
+                    enterprise_name = intent.extras?.getString("enterpriseName"),
+                    description = intent.extras?.getString("description"),
+                    photo = intent.extras?.getString("photo")
+            )
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.about_menu, menu)
-        title = viewModel.enterprise.value?.enterprise_name
-
+        title = mViewModel.enterprise.value?.enterprise_name
         return true
     }
 
@@ -75,28 +68,30 @@ class AboutActivity : AppCompatActivity() {
     }
 
 
-    private fun creatingObserver(binding: ActivityAboutBinding) {
+    private fun creatingObserver() {
 
-        viewModel.viewState.observe(this, Observer { viewState ->
+        mViewModel.getState().observe(this, Observer { viewState ->
             when (viewState?.state) {
                 State.GETTING_DATA -> {
-                    binding.imageEnterpriseId.downloadPhoto(
+                    imageEnterprise.downloadPhoto(
                             this,
-                            viewState.data!!,
-                            aboutScreen = true
+                            viewState.data ?: ""
                     )
                 }
 
                 State.FAILURE -> {
-                    binding.imageEnterpriseId.setImageResource(R.drawable.imageReport)
+                    imageEnterprise.setImageResource(R.drawable.imageReport)
                 }
 
                 State.LOADING -> {
                     toast(viewState.data.toString())
                 }
 
+                State.WAITING_DATA -> {
+                    mViewModel.loadImage()
+                }
+
                 else -> {
-                    binding.vm?.loadImage()
                 }
             }
         })

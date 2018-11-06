@@ -38,7 +38,7 @@
             </android.support.design.widget.AppBarLayout>
 
             <ImageView
-                android:id="@+id/image_enterprise_id"
+                android:id="@+id/imageEnterprise"
                 android:layout_width="142dp"
                 android:layout_height="129dp"
                 android:layout_marginTop="29dp"
@@ -62,7 +62,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_enterprise_id"
+                app:layout_constraintTop_toBottomOf="@+id/imageEnterprise"
                 tools:text="@string/loren" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

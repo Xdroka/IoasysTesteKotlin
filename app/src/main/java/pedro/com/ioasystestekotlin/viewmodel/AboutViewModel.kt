@@ -6,9 +6,11 @@ import pedro.com.ioasystestekotlin.model.data.Enterprise
 
 class AboutViewModel : ViewModel() {
     var enterprise = MutableLiveData<Enterprise>()
-    var viewState = MutableLiveData<ViewState<String>>().also {
+    private var mViewState = MutableLiveData<ViewState<String>>().also {
         it.value = ViewState(null, State.WAITING_DATA)
     }
+
+    fun getState() = mViewState
 
     fun setEnterprise(enterpriseArgument: Enterprise){
         enterprise.value = enterpriseArgument
@@ -16,10 +18,10 @@ class AboutViewModel : ViewModel() {
 
     fun loadImage() {
         if (enterprise.value?.photo == null) {
-            viewState.postValue(ViewState(null, State.FAILURE))
+            mViewState.postValue(ViewState(null, State.FAILURE))
             return
         }
-        viewState.postValue(ViewState(enterprise.value?.photo, State.GETTING_DATA))
+        mViewState.postValue(ViewState(enterprise.value?.photo, State.GETTING_DATA))
     }
 
 }

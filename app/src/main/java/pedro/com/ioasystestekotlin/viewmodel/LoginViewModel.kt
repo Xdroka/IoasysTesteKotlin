@@ -14,27 +14,28 @@ import pedro.com.ioasystestekotlin.util.validatePassword
 import retrofit2.Response
 
 class LoginViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
-    private var repository = Repository(application)
-    private var user = MutableLiveData<User>().also {
+    private var mRepository = Repository(application)
+    private var mUser = MutableLiveData<User>().also {
         it.value = User()
     }
-    private var state = MutableLiveData<ViewState<HeaderApi>>().also { state ->
+    private var mState = MutableLiveData<ViewState<HeaderApi>>().also { state ->
         state.value = ViewState.initializing()
     }
-    private var loginSubscribe: LoginSubscriber? = null
+    private var mLoginSubscribe: LoginSubscriber? = null
 
     fun onClick() {
         teste()
-        val email = user.value?._email ?: ""
-        val password = user.value?._password ?: ""
+
+        val email = mUser.value?._email ?: ""
+        val password = mUser.value?._password ?: ""
         val isEmail = email.validateEmail()
         val isPassword = password.validatePassword()
 
         if (isEmail && isPassword) {
 
-            state.postValue(ViewState.loading())
+            mState.postValue(ViewState.loading())
 
-            loginSubscribe = repository
+            mLoginSubscribe = mRepository
                     .authentication(User(email, password))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -43,12 +44,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
         }
 
         when (isEmail) {
-            true -> state.postValue(ViewState.failure(Exception("passwordInvalid")))
+            true -> mState.postValue(ViewState.failure(Exception("passwordInvalid")))
             false -> {
-//                    if(isPassword)
-                state.postValue(ViewState.failure(Exception("emailInvalid")))
-//                    else
-//                        state.postValue(ViewState.failure(Exception("bothInvalid")))
+                if (isPassword) {
+                    mState.postValue(ViewState.failure(Exception("emailInvalid")))
+                } else {
+                    mState.postValue(ViewState.failure(Exception("bothInvalid")))
+                }
             }
         }
     }
@@ -58,12 +60,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
 
         override fun onNext(response: Response<AuthRequest>) {
             if (response.body()?.success != true) {
-                state.postValue(ViewState.failure(java.lang.Exception("loginInvalid")))
+                mState.postValue(ViewState.failure(java.lang.Exception("loginInvalid")))
                 return
             }
 
             val headers = response.headers()
-            state.postValue(
+            mState.postValue(
                     ViewState.success(
                             HeaderApi(
                                     access_token = headers["access-token"] ?: "",
@@ -75,21 +77,21 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
         }
 
         override fun onError(exception: Throwable) {
-            state.postValue(ViewState.failure(exception))
+            mState.postValue(ViewState.failure(exception))
         }
     }
 
-    fun getUser() = user
+    fun getUser() = mUser
 
-    fun getState() = state
+    fun getState() = mState
 
-    fun teste(){
-        user.value?._email = "testeapple@ioasys.com.br"
-        user.value?._password = "12341234"
+    private fun teste() {
+        mUser.value?._email = "testeapple@ioasys.com.br"
+        mUser.value?._password = "12341234"
     }
 
     override fun onCleared() {
-        loginSubscribe?.dispose()
+        mLoginSubscribe?.dispose()
         super.onCleared()
     }
 }
