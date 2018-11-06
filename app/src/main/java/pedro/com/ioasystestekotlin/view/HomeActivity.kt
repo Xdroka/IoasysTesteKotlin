@@ -1,19 +1,20 @@
 package pedro.com.ioasystestekotlin.view
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.Menu
 import kotlinx.android.synthetic.main.activity_home.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
-import pedro.com.ioasystestekotlin.model.data.Enterprise
-import pedro.com.ioasystestekotlin.model.data.StringObservable
+import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
+import pedro.com.ioasystestekotlin.model.dataclass.StringObservable
 import pedro.com.ioasystestekotlin.util.hide
 import pedro.com.ioasystestekotlin.util.show
 import pedro.com.ioasystestekotlin.util.toast
@@ -22,9 +23,10 @@ import pedro.com.ioasystestekotlin.viewmodel.State
 
 class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
-    private val mViewModel: HomeViewModel by lazy {
-        ViewModelProviders.of(this).get(HomeViewModel::class.java)
-    }
+//    private val mViewModel: HomeViewModel by lazy {
+//        ViewModelProviders.of(this).get(HomeViewModel::class.java)
+//    }
+    private val mViewModel by viewModel<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,11 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
         mViewModel.getState().observe(this, Observer { viewState ->
             loadingProgressBar.hide()
 
+            Log.d("FEED",
+                    "${viewState?.state} -  ${viewState?.data} " +
+                            "- ${viewState?.throwable?.message}"
+            )
+
             when (viewState?.state) {
                 State.SUCCESS -> {
                     mViewModel.getState().value?.data?.let { list ->
@@ -84,6 +91,7 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
                         toast(it)
                     }
                 }
+
 
                 else -> {
 //                    do nothing

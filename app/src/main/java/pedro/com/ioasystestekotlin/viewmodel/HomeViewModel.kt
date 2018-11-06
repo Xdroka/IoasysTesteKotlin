@@ -6,7 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import pedro.com.ioasystestekotlin.model.data.*
+import pedro.com.ioasystestekotlin.model.dataclass.*
 import pedro.com.ioasystestekotlin.model.interactor.Repository
 import retrofit2.Response
 

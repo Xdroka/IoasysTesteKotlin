@@ -8,17 +8,19 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_login.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
+import pedro.com.ioasystestekotlin.model.dataclass.HeaderApi
 import pedro.com.ioasystestekotlin.util.*
 import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
 class LoginActivity : AppCompatActivity() {
-    private val mViewModel: LoginViewModel by lazy {
-        ViewModelProviders.of(this).get(LoginViewModel::class.java)
-    }
+//    private val mViewModel: LoginViewModel by lazy {
+//        ViewModelProviders.of(this).get(LoginViewModel::class.java)
+//    }
+    private val mViewModel by viewModel<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,10 @@ class LoginActivity : AppCompatActivity() {
         mViewModel.getState().observe(this, Observer { viewState ->
             initializingLayout()
 
-            Log.e("FEED", viewState.toString())
+            Log.d("FEED",
+                    "${viewState?.state} -  ${viewState?.data} " +
+                            "- ${viewState?.throwable?.message}"
+            )
 
             when (viewState?.state) {
                 State.LOADING -> {

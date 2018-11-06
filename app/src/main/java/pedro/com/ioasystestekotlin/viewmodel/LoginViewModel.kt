@@ -5,15 +5,16 @@ import android.arch.lifecycle.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import pedro.com.ioasystestekotlin.model.data.AuthRequest
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
-import pedro.com.ioasystestekotlin.model.data.User
+import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
+import pedro.com.ioasystestekotlin.model.dataclass.HeaderApi
+import pedro.com.ioasystestekotlin.model.dataclass.User
 import pedro.com.ioasystestekotlin.model.interactor.Repository
+import pedro.com.ioasystestekotlin.model.interactor.RepositoryInterface
 import pedro.com.ioasystestekotlin.util.validateEmail
 import pedro.com.ioasystestekotlin.util.validatePassword
 import retrofit2.Response
 
-class LoginViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
+class LoginViewModel(application: Application/*, repository: RepositoryInterface*/) : AndroidViewModel(application), LifecycleObserver {
     private var mRepository = Repository(application)
     private var mUser = MutableLiveData<User>().also {
         it.value = User()
@@ -43,16 +44,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
             return
         }
 
-        when (isEmail) {
-            true -> mState.postValue(ViewState.failure(Exception("passwordInvalid")))
-            false -> {
-                if (isPassword) {
-                    mState.postValue(ViewState.failure(Exception("emailInvalid")))
-                } else {
-                    mState.postValue(ViewState.failure(Exception("bothInvalid")))
-                }
-            }
-        }
+        mState.postValue(ViewState.failure(
+                Exception(
+                        when (isEmail) {
+                            true -> "passwordInvalid"
+                            false -> {
+                                when (isPassword) {
+                                    true -> "emailInvalid"
+                                    false -> "bothInvalid"
+                                }
+                            }
+                        }
+                )
+        ))
     }
 
     inner class LoginSubscriber : DisposableObserver<Response<AuthRequest>>() {

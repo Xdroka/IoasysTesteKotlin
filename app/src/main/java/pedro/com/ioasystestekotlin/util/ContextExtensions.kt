@@ -2,7 +2,7 @@ package pedro.com.ioasystestekotlin.util
 
 import android.content.Context
 import android.widget.Toast
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
+import pedro.com.ioasystestekotlin.model.dataclass.HeaderApi
 
 fun Context.saveHeader(header: HeaderApi){
     val sharedPreference = this.getSharedPreferences(

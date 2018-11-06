@@ -2,10 +2,10 @@ package pedro.com.ioasystestekotlin.model.api
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
-import pedro.com.ioasystestekotlin.model.data.AuthRequest
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
-import pedro.com.ioasystestekotlin.model.data.ListEnterprises
-import pedro.com.ioasystestekotlin.model.data.User
+import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
+import pedro.com.ioasystestekotlin.model.dataclass.HeaderApi
+import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
+import pedro.com.ioasystestekotlin.model.dataclass.User
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

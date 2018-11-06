@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@color/white"
-        android:onClick="@{() -> item.onClickItem()}">
+        android:background="@color/white">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="87dp"
-                android:layout_height="92dp"
+                android:layout_width="88dp"
+                android:layout_height="89dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
@@ -48,6 +47,8 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/enterprise_name" />
@@ -60,6 +61,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@{item.enterprise.enterprise_type.enterprise_type_name}"
                 android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/enterpriseNameTextViewId"
                 tools:text="@string/enterprise_bussiness_type" />
@@ -70,8 +73,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@{item.enterprise.country}"
                 android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/bussinessTextViewId"
                 tools:text="@string/enterprise_country" />

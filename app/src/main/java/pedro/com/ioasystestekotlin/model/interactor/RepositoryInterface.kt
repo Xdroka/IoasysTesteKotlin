@@ -1,10 +1,9 @@
 package pedro.com.ioasystestekotlin.model.interactor
 
 import io.reactivex.Observable
-import pedro.com.ioasystestekotlin.model.data.AuthRequest
-import pedro.com.ioasystestekotlin.model.data.HeaderApi
-import pedro.com.ioasystestekotlin.model.data.ListEnterprises
-import pedro.com.ioasystestekotlin.model.data.User
+import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
+import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
+import pedro.com.ioasystestekotlin.model.dataclass.User
 import retrofit2.Response
 
 interface RepositoryInterface {

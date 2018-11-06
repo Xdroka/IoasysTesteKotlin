@@ -1,11 +1,9 @@
 package pedro.com.ioasystestekotlin.model.api
 
 import io.reactivex.Flowable
-import pedro.com.ioasystestekotlin.model.data.AuthRequest
-import pedro.com.ioasystestekotlin.model.data.Enterprise
-import pedro.com.ioasystestekotlin.model.data.ListEnterprises
-import pedro.com.ioasystestekotlin.model.data.User
-import retrofit2.Call
+import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
+import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
+import pedro.com.ioasystestekotlin.model.dataclass.User
 import retrofit2.Response
 import retrofit2.http.*
 

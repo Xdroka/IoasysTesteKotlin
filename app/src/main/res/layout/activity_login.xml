@@ -122,7 +122,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@color/greeny_blue"
-                android:onClick="@{() -> vm.onLoginClick()}"
+                android:onClick="@{() -> vm.onClick()}"
                 android:text="@string/siggin_button"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"

@@ -10,7 +10,7 @@ import pedro.com.ioasystestekotlin.model.api.WebService
 
 fun ImageView.downloadPhoto(context: Context, photoUrl: String) {
     val imageFailure = if (photoUrl != "") {
-        R.drawable.download_icon
+        R.drawable.download
     } else {
         R.drawable.imageReport
     }
