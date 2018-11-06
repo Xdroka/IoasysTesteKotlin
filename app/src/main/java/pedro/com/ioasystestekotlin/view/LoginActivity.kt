@@ -6,73 +6,89 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
-import android.view.View
-import android.widget.Toast
+import android.util.Log
+import kotlinx.android.synthetic.main.activity_login.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
+import pedro.com.ioasystestekotlin.model.data.HeaderApi
+import pedro.com.ioasystestekotlin.util.*
 import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
 class LoginActivity : AppCompatActivity() {
+    private val viewModel: LoginViewModel by lazy {
+        ViewModelProviders.of(this).get(LoginViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        creatingObservers(binding)
+        binding.vm = viewModel
+        creatingObservers()
 
         binding.executePendingBindings()
     }
 
-    private fun creatingObservers(binding: ActivityLoginBinding) {
-        binding.vm?.state?.observe(this, Observer { viewState ->
-            initializingLayout(binding)
+    private fun creatingObservers() {
+        viewModel.getState().observe(this, Observer { viewState ->
+            initializingLayout()
+
+            Log.e("FEED", viewState.toString())
+
             when (viewState?.state) {
                 State.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-
-                State.GETTING_DATA -> {
-                    toast(viewState.data.toString())
+                    progressBar.show()
+                    siginButton.turnOff()
                 }
 
                 State.SUCCESS -> {
-                    callingHomeActivity(binding)
-                }
-
-                State.FAILURE -> {
-                    if (viewState.data.equals("email")) {
-                        binding.emailInputText.error = getString(R.string.error_login)
-                    } else {
-                        binding.passwordInputText.error = getString(R.string.error_invalid_password)
+                    viewState.data?.let { header ->
+                        callingHomeActivity(header)
                     }
                 }
 
-                State.WAITING_DATA -> {
-//                  do nothing
+                State.FAILURE -> {
+                    val errorMessage = viewState.throwable?.message
+
+                    when(errorMessage) {
+                        "emailInvalid" ->
+                            emailInputText.error = getString(R.string.error_invalid_email)
+
+                        "passwordInvalid" ->
+                            passwordInputText.error = getString(R.string.error_invalid_password)
+
+                        "loginInvalid" ->
+                            toast(getString(R.string.invalid_login))
+
+                        else ->
+                            toast(getString(R.string.error_connectior))
+                    }
+                }
+
+                else -> {
+//                    do nothing
                 }
             }
+
         })
 
     }
 
-    private fun initializingLayout(binding: ActivityLoginBinding) {
-        binding.progressBar.visibility = View.GONE
-        binding.emailInputText.error = null
-        binding.passwordInputText.error = null
+    private fun initializingLayout() {
+        progressBar.hide()
+        siginButton.turnIn()
+        emailInputText.error = null
+        passwordInputText.error = null
     }
 
-    private fun callingHomeActivity(binding: ActivityLoginBinding) {
-        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-        intent.putExtra("token", binding.vm!!.api.header.access_token)
-        intent.putExtra("uid", binding.vm!!.api.header.uid)
-        intent.putExtra("client", binding.vm!!.api.header.client)
-        startActivity(intent)
+    private fun callingHomeActivity(header: HeaderApi) {
+        saveHeader(header)
+        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+        finish()
     }
 
-    private fun toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, message, duration).show()
-    }
+
 }
+
+

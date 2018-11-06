@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_about.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
-import pedro.com.ioasystestekotlin.model.util.downloadPhoto
+import pedro.com.ioasystestekotlin.util.downloadPhoto
 import pedro.com.ioasystestekotlin.viewmodel.AboutViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 

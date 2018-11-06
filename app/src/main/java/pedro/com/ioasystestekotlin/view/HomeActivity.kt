@@ -7,10 +7,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
@@ -18,22 +16,25 @@ import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
 import pedro.com.ioasystestekotlin.model.data.StringObservable
+import pedro.com.ioasystestekotlin.util.getHeader
+import pedro.com.ioasystestekotlin.util.toast
 import pedro.com.ioasystestekotlin.viewmodel.HomeViewModel
 import pedro.com.ioasystestekotlin.viewmodel.State
 
-class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise> {
+class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
-
+    private val viewModel: HomeViewModel by lazy {
+        ViewModelProviders.of(this).get(HomeViewModel::class.java)
+    }
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        binding.vm = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        binding.vm = viewModel
         setSupportActionBar(binding.toolbarSearchId)
 
-        retrievingHeaders()
         creatingObservers()
         binding.executePendingBindings()
     }
@@ -50,12 +51,12 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise>
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
-                binding.vm?.searchListener()
+                viewModel.searchListener()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.vm?.searchField?.value = StringObservable(newText ?: "")
+                viewModel.searchField.value = StringObservable(newText ?: "")
                 msgTextViewId.visibility = View.GONE
                 return true
             }
@@ -65,12 +66,15 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise>
     }
 
     private fun creatingObservers() {
-        binding.vm?.state?.observe(this, Observer { viewState ->
+        viewModel.getState().observe(this, Observer { viewState ->
 
-            binding.loadingProgressBarId.visibility = View.GONE
+            loadingProgressBarId.visibility = View.GONE
             when (viewState?.state) {
                 State.SUCCESS -> {
-                    setupRecycler(binding.vm?.enterpriseList?.value!!)
+                    viewModel.getState().value?.data?.let { list ->
+                        list[0].enterprise_name?.let { toast(it) }
+                        setupRecycler(list)
+                    }
                 }
 
                 State.LOADING -> {
@@ -95,19 +99,16 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener<Enterprise>
     )
 
     private fun setupRecycler(enterpriseList: List<Enterprise>) {
-        enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
+        enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this).also {
+        }
         enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList, this)
     }
 
-    private fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onItemClick(t: Enterprise) {
+    override fun onItemClick(enterprise: Enterprise) {
         val intent = Intent(this, AboutActivity::class.java)
-        intent.putExtra("description", t.description)
-        intent.putExtra("photo", t.photo)
-        intent.putExtra("enterpriseName", t.enterprise_name)
+        intent.putExtra("description", enterprise.description)
+        intent.putExtra("photo", enterprise.photo)
+        intent.putExtra("enterpriseName", enterprise.enterprise_name)
         startActivity(intent)
     }
 

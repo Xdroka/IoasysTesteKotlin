@@ -11,6 +11,8 @@
     <string name="enterprise_name">Nome da Empresa</string>
     <string name="enterprise_bussiness_type">Negócio</string>
     <string name="enterprise_country">País</string>
-    <string name="error_login">Digite um email válido</string>
+    <string name="error_invalid_email">Digite um email válido</string>
     <string name="error_invalid_password">A senha deve conter no mínimo 4 caracteres</string>
+    <string name="invalid_login">Login Invalido</string>
+    <string name="error_connectior">Falha na Conexão</string>
 </resources>

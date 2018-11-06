@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.EnterpriseListBinding
 import pedro.com.ioasystestekotlin.model.data.Enterprise
-import pedro.com.ioasystestekotlin.model.util.downloadPhoto
+import pedro.com.ioasystestekotlin.util.downloadPhoto
 
 class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
-                         private val listener: OnItemAdapterClickListener<Enterprise>
+                         private val listener: OnItemAdapterClickListener
 ) : RecyclerView.Adapter<EnterpriseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnterpriseViewHolder {
@@ -52,6 +52,6 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
 
 }
 
-interface OnItemAdapterClickListener<T> {
-    fun onItemClick(t: T)
+interface OnItemAdapterClickListener {
+    fun onItemClick(enterprise: Enterprise)
 }

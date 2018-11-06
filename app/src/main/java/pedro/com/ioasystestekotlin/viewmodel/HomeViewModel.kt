@@ -1,32 +1,68 @@
 package pedro.com.ioasystestekotlin.viewmodel
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import pedro.com.ioasystestekotlin.model.api.ApiConnection
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import pedro.com.ioasystestekotlin.model.data.*
+import pedro.com.ioasystestekotlin.model.interactor.Repository
+import retrofit2.Response
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(aplication: Application) : AndroidViewModel(aplication) {
     var searchField = MutableLiveData<StringObservable>().also {
         it.value = StringObservable()
     }
-    var state = MutableLiveData<ViewState<String>>().also {viewState ->
+    private var state = MutableLiveData<ViewState<List<Enterprise>>>().also { viewState ->
         viewState.value = ViewState(null, State.WAITING_DATA)
     }
     var enterpriseList = MutableLiveData<List<Enterprise>>().also { list ->
         list.value = ArrayList()
     }
-    lateinit var api: ApiConnection
-
-    fun setHeader(token: String, uid: String, client: String) {
-        api = ApiConnection()
-        api.header = HeaderApi(token, uid, client)
-    }
+    private val repository = Repository(aplication)
+    private lateinit var header: HeaderApi
+    private var homeSubscribe: HomeSubscriber? = null
 
     fun searchListener() {
         val searchableEnterprises = searchField.value?.text ?: ""
         state.postValue(ViewState(null, State.LOADING))
-        api.searchEnterprises(searchableEnterprises, state, enterpriseList)
+//        api.searchEnterprises(searchableEnterprises, state, enterpriseList)
+        homeSubscribe = repository
+                .searchEnterprises(searchableEnterprises)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(HomeSubscriber())
     }
 
+    inner class HomeSubscriber : DisposableObserver<Response<ListEnterprises>>() {
+        override fun onComplete() {
+
+        }
+
+        override fun onNext(response: Response<ListEnterprises>) {
+            if (!response.isSuccessful) {
+                state.postValue(ViewState.failure(Exception("")))
+                return
+            }
+
+            response.body()?.enterprises?.let {list ->
+                state.postValue(ViewState.success(list))
+                return
+            }
+            state.postValue(ViewState.success(listOf(Enterprise())))
+        }
+
+        override fun onError(exception: Throwable) {
+            state.postValue(ViewState.failure(exception))
+        }
+    }
+
+    fun getState() = state
+
+    fun setHeader(token: String, uid: String, client: String) {
+        header = HeaderApi(token, uid, client)
+    }
 
 }
