@@ -69,7 +69,7 @@ class ApiConnection {
 //    }
 //
 //    fun doLogin(onSuccess: () -> Unit, onFailure: () -> Unit) {
-////        mService.authentification()
+////        mService.authentication()
 ////                .
 //    }
 //

@@ -3,14 +3,14 @@ package pedro.com.ioasystestekotlin.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
-import pedro.com.ioasystestekotlin.model.dataclass.*
-import pedro.com.ioasystestekotlin.model.interactor.Repository
+import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
+import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
+import pedro.com.ioasystestekotlin.model.dataclass.StringObservable
+import pedro.com.ioasystestekotlin.model.interactor.RepositoryInterface
 import retrofit2.Response
 
-class HomeViewModel(app: Application) : AndroidViewModel(app) {
+class HomeViewModel(app: Application, repository: RepositoryInterface) : AndroidViewModel(app) {
     var searchField = MutableLiveData<StringObservable>().also {
         it.value = StringObservable()
     }
@@ -18,45 +18,29 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
             .also { viewState ->
                 viewState.value = ViewState(null, State.WAITING_DATA)
             }
-    private val mRepository = Repository(app)
-    private var mHomeSubscribe: HomeSubscriber? = null
+    private val mRepository = repository
+    private lateinit var mHomeSubscribe: DisposableObserver<Response<ListEnterprises>>
 
     fun searchListener() {
         val searchableEnterprises = searchField.value?.text ?: ""
         mState.postValue(ViewState.loading())
 
         mHomeSubscribe = mRepository
-                .searchEnterprises(searchableEnterprises)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(HomeSubscriber())
-    }
-
-    inner class HomeSubscriber : DisposableObserver<Response<ListEnterprises>>() {
-        override fun onComplete() {
-
-        }
-
-        override fun onNext(response: Response<ListEnterprises>) {
-            if (!response.isSuccessful) {
-                mState.postValue(ViewState.failure(
-                        Exception("HTTP: ${response.code()} - ${response.message()} ")))
-                return
-            }
-
-            response.body()?.enterprises?.let { list ->
-                mState.postValue(ViewState.success(list))
-                return
-            }
-            mState.postValue(ViewState.success(listOf(Enterprise())))
-        }
-
-        override fun onError(exception: Throwable) {
-            mState.postValue(ViewState.failure(exception))
-        }
+                .searchEnterprises(
+                        queryName = searchableEnterprises,
+                        searchFound = {
+                            mState.postValue(ViewState.success(it))
+                        },
+                        errorSearch = {
+                            mState.postValue(ViewState.failure(it))
+                        })
     }
 
     fun getState() = mState
 
+    override fun onCleared() {
+        mHomeSubscribe.dispose()
+        super.onCleared()
+    }
 
 }

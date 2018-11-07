@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
         mViewModel.getState().observe(this, Observer { viewState ->
             loadingProgressBar.hide()
 
-            Log.d("FEED",
+            Log.d("FEEDS",
                     "${viewState?.state} -  ${viewState?.data} " +
                             "- ${viewState?.throwable?.message}"
             )
