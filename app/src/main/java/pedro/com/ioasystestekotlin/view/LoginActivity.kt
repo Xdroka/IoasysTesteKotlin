@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             when (viewState?.state) {
                 State.LOADING -> {
                     progressBar.show()
-                    siginButton.turnOff()
+                    signButton.turnOff()
                     emailInputText.turnOff()
                     passwordInputText.turnOff()
                 }
@@ -100,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
         progressBar.hide()
         emailInputText.turnIn()
         passwordInputText.turnIn()
-        siginButton.turnIn()
+        signButton.turnIn()
         emailInputText.error = null
         passwordInputText.error = null
     }

@@ -1,6 +1,5 @@
 package pedro.com.ioasystestekotlin.model.interactor
 
-import io.reactivex.Observable
 import io.reactivex.observers.DisposableObserver
 import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
 import pedro.com.ioasystestekotlin.model.dataclass.Enterprise

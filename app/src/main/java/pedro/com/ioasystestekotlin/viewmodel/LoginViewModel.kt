@@ -12,7 +12,10 @@ import pedro.com.ioasystestekotlin.util.validateEmail
 import pedro.com.ioasystestekotlin.util.validatePassword
 import retrofit2.Response
 
-class LoginViewModel(application: Application, repository: RepositoryInterface) : AndroidViewModel(application), LifecycleObserver {
+class LoginViewModel(application: Application,
+                     repository: RepositoryInterface
+) : AndroidViewModel(application), LifecycleObserver {
+
     private var mRepository = repository
     private var mUser = MutableLiveData<User>().also {
         it.value = User()
@@ -24,6 +27,7 @@ class LoginViewModel(application: Application, repository: RepositoryInterface) 
 
     fun onClick() {
         teste()
+
         val email = mUser.value?._email ?: ""
         val password = mUser.value?._password ?: ""
         val isEmail = email.validateEmail()
@@ -40,7 +44,8 @@ class LoginViewModel(application: Application, repository: RepositoryInterface) 
                     },
                     errorLogin = {
                         mState.postValue(ViewState.failure(it))
-                    })
+                    }
+            )
             return
         }
 

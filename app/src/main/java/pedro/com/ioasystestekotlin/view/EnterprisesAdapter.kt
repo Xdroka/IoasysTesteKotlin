@@ -14,7 +14,7 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnterpriseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = EnterpriseListBinding.inflate(inflater)
+        val binding = EnterpriseListBinding.inflate(inflater, parent,false)
         return EnterpriseViewHolder(binding)
     }
 
@@ -38,10 +38,10 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
             listener.onItemClick(enterprise)
         }
 
-        enterprise.photo?.let {
+        enterprise.photo?.let { photoUrl ->
             holder.binding.imageView.downloadPhoto(
-                    holder.binding.root.context,
-                    it
+//                    holder.itemView.context,
+                    photoUrl
             )
         }
 

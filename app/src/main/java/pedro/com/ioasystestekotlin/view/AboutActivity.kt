@@ -73,10 +73,13 @@ class AboutActivity : AppCompatActivity() {
         mViewModel.getState().observe(this, Observer { viewState ->
             when (viewState?.state) {
                 State.GETTING_DATA -> {
-                    imageEnterprise.downloadPhoto(
-                            this,
-                            viewState.data ?: ""
-                    )
+                    viewState.data?.let {photoUrl ->
+                        imageEnterprise.downloadPhoto(
+//                                context = this,
+                                photoUrl = photoUrl,
+                                enabledReDownload = true
+                        )
+                    }
                 }
 
                 State.FAILURE -> {

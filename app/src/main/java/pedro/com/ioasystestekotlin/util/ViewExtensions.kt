@@ -1,6 +1,5 @@
 package pedro.com.ioasystestekotlin.util
 
-import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -8,9 +7,9 @@ import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.model.api.WebService
 
 
-fun ImageView.downloadPhoto(context: Context, photoUrl: String) {
-    val imageFailure = if (photoUrl != "") {
-        R.drawable.download
+fun ImageView.downloadPhoto(photoUrl: String, enabledReDownload: Boolean = false) {
+    val imageFailure = if (enabledReDownload) {
+        R.drawable.download_icon
     } else {
         R.drawable.imageReport
     }

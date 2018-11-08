@@ -28,12 +28,13 @@ class HomeViewModel(app: Application, repository: RepositoryInterface) : Android
         mHomeSubscribe = mRepository
                 .searchEnterprises(
                         queryName = searchableEnterprises,
-                        searchFound = {
-                            mState.postValue(ViewState.success(it))
+                        searchFound = { list ->
+                            mState.postValue(ViewState.success(list))
                         },
-                        errorSearch = {
-                            mState.postValue(ViewState.failure(it))
-                        })
+                        errorSearch = { throwable ->
+                            mState.postValue(ViewState.failure(throwable))
+                        }
+                )
     }
 
     fun getState() = mState

@@ -18,20 +18,21 @@ class RemoteData : RemoteDataInterface {
 
     override fun searchEnterprises(queryName: String,
                                    headerApi: HeaderApi): Observable<Response<ListEnterprises>> {
-        val headerHashMap = HashMap<String,String>()
+        val headerHashMap = HashMap<String, String>()
         headerHashMap["access-token"] = headerApi.access_token
         headerHashMap["client"] = headerApi.client
         headerHashMap["uid"] = headerApi.uid
 
-        return   mService.searchEnterprise(queryName, headerHashMap).toObservable()
+        return mService.searchEnterprise(queryName, headerHashMap).toObservable()
 
     }
 }
 
-inline fun <reified T> createWebService(): T = Retrofit
-        .Builder()
-        .baseUrl(WebService.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-        .create(T::class.java)
+inline fun <reified T> createWebService(): T =
+        Retrofit
+                .Builder()
+                .baseUrl(WebService.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(T::class.java)

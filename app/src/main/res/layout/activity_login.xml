@@ -16,13 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.LoginActivity"
-        android:background="@color/beige">
+        android:theme="@style/LoginScreen">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteY="81dp">
-
 
             <ImageView
                 android:id="@+id/logoImageViewId"
@@ -115,16 +114,16 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/siginButton"
+                android:id="@+id/signButton"
                 android:layout_width="195dp"
                 android:layout_height="39dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_weight="1"
                 android:background="@color/greeny_blue"
+                android:textColor="@color/white"
+                android:layout_weight="1"
                 android:onClick="@{() -> vm.onClick()}"
                 android:text="@string/siggin_button"
-                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"
                 app:layout_constraintStart_toStartOf="@+id/passwordInputLayout"
                 app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout" />

@@ -23,9 +23,6 @@ import pedro.com.ioasystestekotlin.viewmodel.State
 
 class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
-//    private val mViewModel: HomeViewModel by lazy {
-//        ViewModelProviders.of(this).get(HomeViewModel::class.java)
-//    }
     private val mViewModel by viewModel<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +74,7 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
             when (viewState?.state) {
                 State.SUCCESS -> {
+                    msgTextView.hide()
                     mViewModel.getState().value?.data?.let { list ->
                         setupRecycler(list)
                     }
@@ -101,8 +99,10 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
     }
 
     private fun setupRecycler(enterpriseList: List<Enterprise>) {
-        enterpriseRecyclerViewId.layoutManager = LinearLayoutManager(this)
-        enterpriseRecyclerViewId.adapter = EnterprisesAdapter(enterpriseList, this)
+        enterpriseRecyclerView.layoutManager = LinearLayoutManager(this).also {
+
+        }
+        enterpriseRecyclerView.adapter = EnterprisesAdapter(enterpriseList, this)
     }
 
     override fun onItemClick(enterprise: Enterprise) {

@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
-                android:theme="@style/HomeScreen"
+                android:theme="@style/HomeToolbar"
                 android:title=""
                 app:logo="@drawable/logo_nav">
 
@@ -51,10 +51,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterpriseRecyclerViewId" />
+            app:layout_constraintTop_toBottomOf="@+id/enterpriseRecyclerView" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/enterpriseRecyclerViewId"
+            android:id="@+id/enterpriseRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

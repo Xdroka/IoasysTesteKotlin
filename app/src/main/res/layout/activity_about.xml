@@ -32,7 +32,7 @@
                     app:navigationIcon="@drawable/ic_arrow_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/AboutScreen">
+                    android:theme="@style/AboutToolbar">
 
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.AppBarLayout>

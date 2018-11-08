@@ -21,7 +21,9 @@ class AboutViewModel : ViewModel() {
             mViewState.postValue(ViewState(null, State.FAILURE))
             return
         }
-        mViewState.postValue(ViewState(enterprise.value?.photo, State.GETTING_DATA))
+        enterprise.value?.photo?.let {
+            mViewState.postValue(ViewState.gettingData(it))
+        }
     }
 
 }

@@ -41,7 +41,7 @@ class Repository(val app: Application) : RepositoryInterface {
                         }
 
                         override fun onError(exception: Throwable) {
-                            errorLogin(Exception("loginInvalid"))
+                            errorLogin(exception)
                         }
 
                         override fun onComplete() {}
