@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.model.api
+package pedro.com.ioasystestekotlin.remote.data
 
 import io.reactivex.Observable
 import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest

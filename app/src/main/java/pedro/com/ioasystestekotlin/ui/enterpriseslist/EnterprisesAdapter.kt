@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.view
+package pedro.com.ioasystestekotlin.ui.enterpriseslist
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.EnterpriseListBinding
 import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
 import pedro.com.ioasystestekotlin.util.downloadPhoto
+import pedro.com.ioasystestekotlin.ui.home.OnItemAdapterClickListener
 
-class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
+class EnterprisesAdapter(private var enterpriseList: List<Enterprise>,
                          private val listener: OnItemAdapterClickListener
 ) : RecyclerView.Adapter<EnterpriseViewHolder>() {
 
@@ -18,13 +19,11 @@ class EnterprisesAdapter(private var enterpriseList: List<Enterprise>?,
         return EnterpriseViewHolder(binding)
     }
 
-    override fun getItemCount() = enterpriseList?.size ?: 0
+    override fun getItemCount() = enterpriseList.size //?: 0
 
 
     override fun onBindViewHolder(holder: EnterpriseViewHolder, position: Int) {
-        if (enterpriseList == null) return
-
-        val enterprise = enterpriseList!![position]
+        val enterprise = enterpriseList[position]
 
         holder.binding.item?.enterprise?.value?.apply {
             _name = enterprise.enterprise_name

@@ -1,7 +1,6 @@
-package pedro.com.ioasystestekotlin.view
+package pedro.com.ioasystestekotlin.ui.login
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +10,12 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
+import pedro.com.ioasystestekotlin.presentation.State
+import pedro.com.ioasystestekotlin.presentation.ViewState
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
+import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
+import pedro.com.ioasystestekotlin.ui.home.HomeActivity
 import pedro.com.ioasystestekotlin.util.*
-import pedro.com.ioasystestekotlin.viewmodel.LoginViewModel
-import pedro.com.ioasystestekotlin.viewmodel.State
 
 class LoginActivity : AppCompatActivity() {
     //    private val mViewModel: LoginViewModel by lazy {
@@ -49,27 +51,27 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 State.SUCCESS -> {
-                    callingHomeActivity()
+                    startActivityAndFinish<HomeActivity>()
                 }
 
                 State.FAILURE -> {
                     val errorMessage = viewState.throwable?.message
 
                     when (errorMessage) {
-                        "emailInvalid" -> {
-                            invalidEmail()
+                        LoginFieldState.emailError() -> {
+                            invalidateEmail()
                         }
 
-                        "passwordInvalid" -> {
-                            invalidPassword()
+                        LoginFieldState.passwordError() -> {
+                            invalidatePassword()
                         }
 
-                        "bothInvalid" -> {
-                            invalidEmail()
-                            invalidPassword()
+                        LoginFieldState.bothError() -> {
+                            invalidateEmail()
+                            invalidatePassword()
                         }
 
-                        "loginInvalid" -> {
+                        LoginFieldState.loginInvalid() -> {
                             toast(getString(R.string.invalid_login), Toast.LENGTH_LONG)
                         }
 
@@ -88,11 +90,11 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun invalidPassword() {
+    private fun invalidatePassword() {
         passwordInputText.error = getString(R.string.error_invalid_password)
     }
 
-    private fun invalidEmail() {
+    private fun invalidateEmail() {
         emailInputText.error = getString(R.string.error_invalid_email)
     }
 
@@ -103,11 +105,6 @@ class LoginActivity : AppCompatActivity() {
         signButton.turnIn()
         emailInputText.error = null
         passwordInputText.error = null
-    }
-
-    private fun callingHomeActivity() {
-        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-        finish()
     }
 
 

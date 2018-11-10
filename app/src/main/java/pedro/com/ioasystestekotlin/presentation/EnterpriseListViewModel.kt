@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.viewmodel
+package pedro.com.ioasystestekotlin.presentation
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

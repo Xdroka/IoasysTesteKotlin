@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="pedro.com.ioasystestekotlin.viewmodel.EnterpriseListViewModel" />
+            type="pedro.com.ioasystestekotlin.presentation.EnterpriseListViewModel" />
         <import type="android.view.View" />
     </data>
 

@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="pedro.com.ioasystestekotlin.viewmodel.AboutViewModel" />
+            type="pedro.com.ioasystestekotlin.presentation.about.AboutViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -20,7 +20,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".view.AboutActivity">
+            tools:context=".ui.about.AboutActivity">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarAboutLayout"

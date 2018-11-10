@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="pedro.com.ioasystestekotlin.viewmodel.HomeViewModel" />
+            type="pedro.com.ioasystestekotlin.presentation.home.HomeViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/beige"
-        tools:context=".view.HomeActivity">
+        tools:context=".ui.home.HomeActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarId"

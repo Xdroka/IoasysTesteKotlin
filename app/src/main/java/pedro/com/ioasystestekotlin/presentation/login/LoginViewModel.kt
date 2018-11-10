@@ -1,13 +1,19 @@
-package pedro.com.ioasystestekotlin.viewmodel
+package pedro.com.ioasystestekotlin.presentation.login
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.observers.DisposableObserver
 import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
 import pedro.com.ioasystestekotlin.model.dataclass.User
 import pedro.com.ioasystestekotlin.model.interactor.RepositoryInterface
+import pedro.com.ioasystestekotlin.presentation.ViewState
+import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
+import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.initializing
+import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.loading
+import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.success
 import pedro.com.ioasystestekotlin.util.validateEmail
 import pedro.com.ioasystestekotlin.util.validatePassword
 import retrofit2.Response
@@ -17,16 +23,18 @@ class LoginViewModel(application: Application,
 ) : AndroidViewModel(application), LifecycleObserver {
 
     private var mRepository = repository
-    private var mUser = MutableLiveData<User>().also {
-        it.value = User()
-    }
-    private var mState = MutableLiveData<ViewState<String>>().also { state ->
-        state.value = ViewState.initializing()
-    }
+    private var mUser = MutableLiveData<User>()
+    private var mState = MutableLiveData<ViewState<String>>()
     private lateinit var mLoginSubscribe: DisposableObserver<Response<AuthRequest>>
 
+    init {
+        mUser.value = User()
+        mState.value = initializing()
+    }
+
+
     fun onClick() {
-        teste()
+        setUserValid()
 
         val email = mUser.value?._email ?: ""
         val password = mUser.value?._password ?: ""
@@ -35,28 +43,32 @@ class LoginViewModel(application: Application,
 
         if (isEmail && isPassword) {
 
-            mState.postValue(ViewState.loading())
+            mState.postValue(loading())
 
             mLoginSubscribe = mRepository.authentication(
                     user = User(email, password),
                     successLogin = {
-                        mState.postValue(ViewState.success())
+                        mState.postValue(success())
                     },
                     errorLogin = {
-                        mState.postValue(ViewState.failure(it))
+                        mState.postValue(failure(it))
                     }
             )
             return
         }
 
-        mState.postValue(ViewState.failure(
+        invalidateFieldsInView(isEmail, isPassword)
+    }
+
+    private fun invalidateFieldsInView(isEmail: Boolean, isPassword: Boolean) {
+        mState.postValue(failure(
                 Exception(
                         when (isEmail) {
-                            true -> "passwordInvalid"
+                            true -> LoginFieldState.passwordError()
                             false -> {
                                 when (isPassword) {
-                                    true -> "emailInvalid"
-                                    false -> "bothInvalid"
+                                    true -> LoginFieldState.emailError()
+                                    false -> LoginFieldState.bothError()
                                 }
                             }
                         }
@@ -67,9 +79,9 @@ class LoginViewModel(application: Application,
 
     fun getUser() = mUser
 
-    fun getState() = mState
+    fun getState(): LiveData<ViewState<String>> = mState
 
-    private fun teste() {
+    private fun setUserValid() {
         mUser.value?._email = "testeapple@ioasys.com.br"
         mUser.value?._password = "12341234"
     }

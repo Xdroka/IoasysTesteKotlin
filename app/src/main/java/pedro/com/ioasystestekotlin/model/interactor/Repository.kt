@@ -4,10 +4,11 @@ import android.app.Application
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import pedro.com.ioasystestekotlin.model.api.RemoteData
+import pedro.com.ioasystestekotlin.remote.data.RemoteData
 import pedro.com.ioasystestekotlin.model.dataclass.*
 import pedro.com.ioasystestekotlin.util.getHeader
 import pedro.com.ioasystestekotlin.util.saveHeader
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
 import retrofit2.Response
 
 class Repository(val app: Application) : RepositoryInterface {
@@ -24,7 +25,7 @@ class Repository(val app: Application) : RepositoryInterface {
                     .subscribeWith(object : DisposableObserver<Response<AuthRequest>>() {
                         override fun onNext(response: Response<AuthRequest>) {
                             if (response.body()?.success != true) {
-                                errorLogin(Exception("loginInvalid"))
+                                errorLogin(Exception(LoginFieldState.loginInvalid()) )
                                 return
                             }
 

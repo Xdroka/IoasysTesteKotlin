@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.viewmodel
+package pedro.com.ioasystestekotlin.presentation
 
 class ViewState<T>(
         val data: T?,

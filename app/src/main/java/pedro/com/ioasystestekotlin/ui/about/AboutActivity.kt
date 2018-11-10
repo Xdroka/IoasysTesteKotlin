@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.view
+package pedro.com.ioasystestekotlin.ui.about
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -11,18 +11,20 @@ import kotlinx.android.synthetic.main.activity_about.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
 import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
+import pedro.com.ioasystestekotlin.presentation.State
+import pedro.com.ioasystestekotlin.presentation.about.AboutViewModel
 import pedro.com.ioasystestekotlin.util.downloadPhoto
 import pedro.com.ioasystestekotlin.util.toast
-import pedro.com.ioasystestekotlin.viewmodel.AboutViewModel
-import pedro.com.ioasystestekotlin.viewmodel.State
 
 class AboutActivity : AppCompatActivity() {
     private val mViewModel: AboutViewModel by lazy {
         ViewModelProviders.of(this)
-                .get(AboutViewModel::class.java).also { aboutViewModel ->
-                    aboutViewModel.setEnterprise(getBundleEnterprise())
+                .get(AboutViewModel::class.java).also {
+                    it.setEnterprise(getBundleEnterprise())
                 }
     }
+
+//    private val mViewModel: AboutViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -44,7 +46,7 @@ class AboutActivity : AppCompatActivity() {
 
     }
 
-    private fun getBundleEnterprise(): Enterprise =
+    private fun getBundleEnterprise() =
             Enterprise(
                     enterprise_name = intent.extras?.getString("enterpriseName"),
                     description = intent.extras?.getString("description"),
@@ -55,7 +57,7 @@ class AboutActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.about_menu, menu)
-        title = mViewModel.enterprise.value?.enterprise_name
+        title = mViewModel.getEnterprise().value?.enterprise_name
         return true
     }
 
@@ -75,7 +77,6 @@ class AboutActivity : AppCompatActivity() {
                 State.GETTING_DATA -> {
                     viewState.data?.let {photoUrl ->
                         imageEnterprise.downloadPhoto(
-//                                context = this,
                                 photoUrl = photoUrl,
                                 enabledReDownload = true
                         )

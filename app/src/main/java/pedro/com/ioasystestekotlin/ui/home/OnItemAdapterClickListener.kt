@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.view
+package pedro.com.ioasystestekotlin.ui.home
 
 import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
 

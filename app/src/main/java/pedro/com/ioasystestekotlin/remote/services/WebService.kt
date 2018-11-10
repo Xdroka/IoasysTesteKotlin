@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.model.api
+package pedro.com.ioasystestekotlin.remote.services
 
 import io.reactivex.Flowable
 import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
@@ -8,16 +8,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface WebService {
-/*
-    @POST("users/auth/sign_in")
-    fun authentication(@Body user: User): Call<AuthRequest>
-
-    @GET("enterprises")
-    fun findEnterprises(@Query("name") nameSearchable: String,
-                        @HeaderMap headers: HashMap<String, String>
-    ): Call<ListEnterprises>
-*/
-
     @POST(AUTH_PATH)
     fun authentication(@Body user: User): Flowable<Response<AuthRequest>>
 
