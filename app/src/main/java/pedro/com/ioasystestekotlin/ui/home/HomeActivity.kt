@@ -6,18 +6,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.Menu
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
-import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
-import pedro.com.ioasystestekotlin.model.dataclass.StringObservable
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.domain.model.StringObservable
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.home.HomeViewModel
 import pedro.com.ioasystestekotlin.ui.about.AboutActivity
-import pedro.com.ioasystestekotlin.ui.enterpriseslist.EnterprisesAdapter
+import pedro.com.ioasystestekotlin.ui.home.enterpriseslist.EnterprisesAdapter
 import pedro.com.ioasystestekotlin.util.*
 
 class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
@@ -62,11 +61,6 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
         mViewModel.getState().observe(this, Observer { viewState ->
             loadingProgressBar.hide()
 
-            Log.d("FEEDS",
-                    "${viewState?.state} -  ${viewState?.data} " +
-                            "- ${viewState?.throwable?.message}"
-            )
-
             when (viewState?.state) {
                 State.SUCCESS -> {
                     msgTextView.hide()
@@ -102,9 +96,9 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
     override fun onItemClick(enterprise: Enterprise) {
         startActivity<AboutActivity>(
                 mapOf(
-                        Pair(first = "description", second = enterprise.description ?: ""),
-                        Pair(first = "photo", second = enterprise.photo ?: ""),
-                        Pair(first = "enterpriseName", second = enterprise.enterprise_name ?: "")
+                        Pair(first = "description", second = enterprise.description),
+                        Pair(first = "photo", second = enterprise.photo),
+                        Pair(first = "enterpriseName", second = enterprise.name)
                 )
         )
     }

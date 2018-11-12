@@ -10,7 +10,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_about.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
-import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
+import pedro.com.ioasystestekotlin.remote.model.EnterpriseApi
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.about.AboutViewModel
 import pedro.com.ioasystestekotlin.util.downloadPhoto
@@ -47,7 +47,7 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun getBundleEnterprise() =
-            Enterprise(
+            EnterpriseApi(
                     enterprise_name = intent.extras?.getString("enterpriseName"),
                     description = intent.extras?.getString("description"),
                     photo = intent.extras?.getString("photo")
@@ -57,7 +57,7 @@ class AboutActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.about_menu, menu)
-        title = mViewModel.getEnterprise().value?.enterprise_name
+        title = mViewModel.getEnterprise().value?.name
         return true
     }
 

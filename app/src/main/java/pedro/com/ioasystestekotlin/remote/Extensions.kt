@@ -1,6 +1,6 @@
 package pedro.com.ioasystestekotlin.remote
 
-import pedro.com.ioasystestekotlin.model.dataclass.HeaderApi
+import pedro.com.ioasystestekotlin.remote.model.HeaderApi
 import pedro.com.ioasystestekotlin.remote.data.RemoteData
 
 fun RemoteData.headerMapper(headerApi: HeaderApi): HashMap<String, String> {

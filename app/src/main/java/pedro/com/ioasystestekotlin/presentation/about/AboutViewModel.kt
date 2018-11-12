@@ -3,9 +3,11 @@ package pedro.com.ioasystestekotlin.presentation.about
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.remote.model.EnterpriseApi
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.ViewState
+import pedro.com.ioasystestekotlin.remote.model.mapper.convertEnterprise
 
 class AboutViewModel : ViewModel() {
     private var enterprise = MutableLiveData<Enterprise>()
@@ -15,8 +17,8 @@ class AboutViewModel : ViewModel() {
 
     fun getState(): LiveData<ViewState<String>> = mViewState
 
-    fun setEnterprise(enterpriseArgument: Enterprise) {
-        enterprise.value = enterpriseArgument
+    fun setEnterprise(enterpriseApiArgument: EnterpriseApi) {
+        enterprise.value = enterpriseApiArgument.convertEnterprise()
     }
 
     fun getEnterprise() = enterprise

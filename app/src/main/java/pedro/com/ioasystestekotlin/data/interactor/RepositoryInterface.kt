@@ -1,14 +1,13 @@
-package pedro.com.ioasystestekotlin.model.interactor
+package pedro.com.ioasystestekotlin.data.interactor
 
 import io.reactivex.observers.DisposableObserver
-import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
-import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
-import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
-import pedro.com.ioasystestekotlin.model.dataclass.User
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.remote.model.AuthRequest
+import pedro.com.ioasystestekotlin.remote.model.ListEnterprises
 import retrofit2.Response
 
 interface RepositoryInterface {
-    fun authentication(user: User,
+    fun authentication(email: String, password: String,
                        successLogin: () -> Unit,
                        errorLogin: (t: Throwable) -> Unit
     ): DisposableObserver<Response<AuthRequest>>

@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.util
+package pedro.com.ioasystestekotlin.domain.model.mapper
 
 import java.util.regex.Pattern
 

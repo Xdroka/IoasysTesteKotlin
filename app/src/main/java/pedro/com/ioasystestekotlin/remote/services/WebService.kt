@@ -1,15 +1,15 @@
 package pedro.com.ioasystestekotlin.remote.services
 
 import io.reactivex.Flowable
-import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
-import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
-import pedro.com.ioasystestekotlin.model.dataclass.User
+import pedro.com.ioasystestekotlin.remote.model.AuthRequest
+import pedro.com.ioasystestekotlin.remote.model.ListEnterprises
+import pedro.com.ioasystestekotlin.remote.model.UserApi
 import retrofit2.Response
 import retrofit2.http.*
 
 interface WebService {
     @POST(AUTH_PATH)
-    fun authentication(@Body user: User): Flowable<Response<AuthRequest>>
+    fun authentication(@Body userApi: UserApi): Flowable<Response<AuthRequest>>
 
     @GET(ENTERPRISES_PATH)
     fun searchEnterprise(@Query(QUERY_NAME) nameSearchable: String,

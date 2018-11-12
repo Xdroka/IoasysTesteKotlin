@@ -1,27 +1,24 @@
 package pedro.com.ioasystestekotlin.util
 
 import android.support.v7.widget.SearchView
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.remote.services.WebService
 
-
 fun ImageView.downloadPhoto(photoUrl: String, enabledReDownload: Boolean = false) {
-    val imageFailure = if (enabledReDownload) {
-        R.drawable.download_icon
+    if (enabledReDownload && photoUrl == "") {
+        this.setImageResource(R.drawable.imageReport)
     } else {
-        R.drawable.imageReport
-    }
+        val imageFailure = R.drawable.download_icon
 
     Glide.with(context)
             .load(WebService.BASE_URL_PHOTO + photoUrl)
             .placeholder(R.drawable.loading)
             .error(imageFailure)
             .into(this)
+    }
 }
 
 fun View.show() {

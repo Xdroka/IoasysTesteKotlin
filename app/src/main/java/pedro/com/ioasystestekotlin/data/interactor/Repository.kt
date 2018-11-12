@@ -1,31 +1,40 @@
-package pedro.com.ioasystestekotlin.model.interactor
+package pedro.com.ioasystestekotlin.data.interactor
 
 import android.app.Application
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import pedro.com.ioasystestekotlin.remote.data.RemoteData
-import pedro.com.ioasystestekotlin.model.dataclass.*
-import pedro.com.ioasystestekotlin.util.getHeader
-import pedro.com.ioasystestekotlin.util.saveHeader
+import pedro.com.ioasystestekotlin.data.mapper.getHeader
+import pedro.com.ioasystestekotlin.data.mapper.saveHeader
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
 import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
+import pedro.com.ioasystestekotlin.remote.data.RemoteData
+import pedro.com.ioasystestekotlin.remote.model.AuthRequest
+import pedro.com.ioasystestekotlin.remote.model.HeaderApi
+import pedro.com.ioasystestekotlin.remote.model.ListEnterprises
+import pedro.com.ioasystestekotlin.remote.model.UserApi
+import pedro.com.ioasystestekotlin.remote.model.mapper.convertListOfEnterprises
 import retrofit2.Response
 
 class Repository(val app: Application) : RepositoryInterface {
     private val mRemoteData = RemoteData()
 
-    override fun authentication(user: User,
+    override fun authentication(email: String, password: String,
                                 successLogin: () -> Unit,
                                 errorLogin: (t: Throwable) -> Unit
     ): DisposableObserver<Response<AuthRequest>> =
 
-            mRemoteData.authentication(user)
+            mRemoteData.authentication(
+                    UserApi(
+                            email = email,
+                            password = password
+                    ))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<Response<AuthRequest>>() {
                         override fun onNext(response: Response<AuthRequest>) {
                             if (response.body()?.success != true) {
-                                errorLogin(Exception(LoginFieldState.loginInvalid()) )
+                                errorLogin(Exception(LoginFieldState.loginInvalid()))
                                 return
                             }
 
@@ -69,12 +78,11 @@ class Repository(val app: Application) : RepositoryInterface {
                                 )
                                 return
                             }
+                            searchFound(
+                                    response.body()?.enterprises?.convertListOfEnterprises()
+                                                                ?: listOf(Enterprise())
+                            )
 
-                            response.body()?.enterprises?.let { list ->
-                                searchFound(list)
-                                return
-                            }
-                            searchFound(listOf(Enterprise()))
                         }
 
                         override fun onError(exception: Throwable) {

@@ -5,12 +5,12 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.observers.DisposableObserver
-import pedro.com.ioasystestekotlin.model.dataclass.Enterprise
-import pedro.com.ioasystestekotlin.model.dataclass.ListEnterprises
-import pedro.com.ioasystestekotlin.model.dataclass.StringObservable
-import pedro.com.ioasystestekotlin.model.interactor.RepositoryInterface
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.domain.model.StringObservable
+import pedro.com.ioasystestekotlin.data.interactor.RepositoryInterface
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.ViewState
+import pedro.com.ioasystestekotlin.remote.model.ListEnterprises
 import retrofit2.Response
 
 class HomeViewModel(app: Application, repository: RepositoryInterface) : AndroidViewModel(app) {

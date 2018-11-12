@@ -4,23 +4,18 @@ import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
 import pedro.com.ioasystestekotlin.presentation.State
-import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
 import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
 import pedro.com.ioasystestekotlin.ui.home.HomeActivity
 import pedro.com.ioasystestekotlin.util.*
 
 class LoginActivity : AppCompatActivity() {
-    //    private val mViewModel: LoginViewModel by lazy {
-//        ViewModelProviders.of(this).get(LoginViewModel::class.java)
-//    }
     private val mViewModel by viewModel<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,11 +31,6 @@ class LoginActivity : AppCompatActivity() {
     private fun creatingObservers() {
         mViewModel.getState().observe(this, Observer { viewState ->
             initializingLayout()
-
-            Log.d("FEEDS",
-                    "${viewState?.state} -  ${viewState?.data} " +
-                            "- ${viewState?.throwable?.message}"
-            )
 
             when (viewState?.state) {
                 State.LOADING -> {

@@ -6,16 +6,16 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.observers.DisposableObserver
-import pedro.com.ioasystestekotlin.model.dataclass.AuthRequest
-import pedro.com.ioasystestekotlin.model.dataclass.User
-import pedro.com.ioasystestekotlin.model.interactor.RepositoryInterface
+import pedro.com.ioasystestekotlin.domain.model.User
+import pedro.com.ioasystestekotlin.remote.model.AuthRequest
+import pedro.com.ioasystestekotlin.data.interactor.RepositoryInterface
 import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.initializing
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.loading
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.success
-import pedro.com.ioasystestekotlin.util.validateEmail
-import pedro.com.ioasystestekotlin.util.validatePassword
+import pedro.com.ioasystestekotlin.domain.model.mapper.validateEmail
+import pedro.com.ioasystestekotlin.domain.model.mapper.validatePassword
 import retrofit2.Response
 
 class LoginViewModel(application: Application,
@@ -46,7 +46,7 @@ class LoginViewModel(application: Application,
             mState.postValue(loading())
 
             mLoginSubscribe = mRepository.authentication(
-                    user = User(email, password),
+                    email = email, password =  password,
                     successLogin = {
                         mState.postValue(success())
                     },
@@ -57,10 +57,10 @@ class LoginViewModel(application: Application,
             return
         }
 
-        invalidateFieldsInView(isEmail, isPassword)
+        invalidateFields(isEmail, isPassword)
     }
 
-    private fun invalidateFieldsInView(isEmail: Boolean, isPassword: Boolean) {
+    private fun invalidateFields(isEmail: Boolean, isPassword: Boolean) {
         mState.postValue(failure(
                 Exception(
                         when (isEmail) {
