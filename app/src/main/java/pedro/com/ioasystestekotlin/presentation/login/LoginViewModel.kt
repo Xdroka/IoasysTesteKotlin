@@ -25,10 +25,8 @@ class LoginViewModel(application: Application,
         mState.value = initializing()
     }
 
-
     fun onClick() {
 //        setUserValid()
-
         val email = mUser.value?._email ?: ""
         val password = mUser.value?._password ?: ""
         val isEmail = email.validateEmail()
@@ -49,7 +47,6 @@ class LoginViewModel(application: Application,
             )
             return
         }
-
         invalidateFields(isEmail, isPassword)
     }
 
