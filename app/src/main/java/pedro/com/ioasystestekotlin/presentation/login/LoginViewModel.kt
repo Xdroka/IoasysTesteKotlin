@@ -1,10 +1,7 @@
 package pedro.com.ioasystestekotlin.presentation.login
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.*
 import pedro.com.ioasystestekotlin.domain.model.User
 import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
@@ -30,7 +27,7 @@ class LoginViewModel(application: Application,
 
 
     fun onClick() {
-        setUserValid()
+//        setUserValid()
 
         val email = mUser.value?._email ?: ""
         val password = mUser.value?._password ?: ""
@@ -42,7 +39,7 @@ class LoginViewModel(application: Application,
             mState.postValue(loading())
 
             mRepository.sign(
-                    email = email, password =  password,
+                    email = email, password = password,
                     onSuccess = {
                         mState.postValue(success())
                     },

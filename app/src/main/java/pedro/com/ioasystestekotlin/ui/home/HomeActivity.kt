@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
+import pedro.com.ioasystestekotlin.domain.ext.putEnterprise
 import pedro.com.ioasystestekotlin.domain.model.Enterprise
 import pedro.com.ioasystestekotlin.domain.model.StringObservable
 import pedro.com.ioasystestekotlin.presentation.State
@@ -94,13 +95,8 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
     }
 
     override fun onItemClick(enterprise: Enterprise) {
-        startActivity<AboutActivity>(
-                mapOf(
-                        Pair(first = "description", second = enterprise.description),
-                        Pair(first = "photo", second = enterprise.photo),
-                        Pair(first = "enterpriseName", second = enterprise.name)
-                )
-        )
+        putEnterprise(enterprise)
+        startActivity<AboutActivity>()
     }
 
 }

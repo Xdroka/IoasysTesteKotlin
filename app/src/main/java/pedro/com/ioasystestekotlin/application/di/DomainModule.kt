@@ -1,6 +1,8 @@
 package pedro.com.ioasystestekotlin.application.di
 
 import org.koin.dsl.module.module
+import pedro.com.ioasystestekotlin.domain.interactor.infoUseCase.InfoEnterpriseUseCase
+import pedro.com.ioasystestekotlin.domain.interactor.infoUseCase.InfoEnterpriseUseCaseImpl
 import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCase
 import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCaseImpl
 import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUse
@@ -13,4 +15,8 @@ val domainModule = module{
 
 //    search enterprises use case
     single { SearchUseCaseImpl(get()) as SearchUseCase }
+
+// info Enterprise use case
+    single { InfoEnterpriseUseCaseImpl(get()) as InfoEnterpriseUseCase }
+
 }

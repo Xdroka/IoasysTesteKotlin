@@ -8,23 +8,18 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_about.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
-import pedro.com.ioasystestekotlin.data.remote.model.EnterpriseApi
+import pedro.com.ioasystestekotlin.domain.model.Enterprise
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.about.AboutViewModel
 import pedro.com.ioasystestekotlin.util.downloadPhoto
 import pedro.com.ioasystestekotlin.util.toast
 
 class AboutActivity : AppCompatActivity() {
-    private val mViewModel: AboutViewModel by lazy {
-        ViewModelProviders.of(this)
-                .get(AboutViewModel::class.java).also {
-                    it.setEnterprise(getBundleEnterprise())
-                }
-    }
 
-//    private val mViewModel: AboutViewModel by viewModel()
+    private val mViewModel: AboutViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,14 +41,6 @@ class AboutActivity : AppCompatActivity() {
 
     }
 
-    private fun getBundleEnterprise() =
-            EnterpriseApi(
-                    enterprise_name = intent.extras?.getString("enterpriseName"),
-                    description = intent.extras?.getString("description"),
-                    photo = intent.extras?.getString("photo")
-            )
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.about_menu, menu)
@@ -69,13 +56,12 @@ class AboutActivity : AppCompatActivity() {
         else -> false
     }
 
-
     private fun creatingObserver() {
 
         mViewModel.getState().observe(this, Observer { viewState ->
             when (viewState?.state) {
                 State.GETTING_DATA -> {
-                    viewState.data?.let {photoUrl ->
+                    viewState.data?.let { photoUrl ->
                         imageEnterprise.downloadPhoto(
                                 photoUrl = photoUrl,
                                 enabledReDownload = true
