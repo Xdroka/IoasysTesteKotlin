@@ -1,11 +1,16 @@
 package pedro.com.ioasystestekotlin.application.di
 
 import org.koin.dsl.module.module
-import pedro.com.ioasystestekotlin.data.interactor.Repository
-import pedro.com.ioasystestekotlin.data.interactor.RepositoryInterface
+import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCase
+import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCaseImpl
+import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUse
+import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUseImpl
 
 
 val domainModule = module{
-    //Repository
-    single { Repository(get()) as RepositoryInterface }
+//    sign use case
+    single { SignCaseUseImpl(get()) as SignCaseUse }
+
+//    search enterprises use case
+    single { SearchUseCaseImpl(get()) as SearchUseCase }
 }

@@ -5,27 +5,23 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import io.reactivex.observers.DisposableObserver
 import pedro.com.ioasystestekotlin.domain.model.User
-import pedro.com.ioasystestekotlin.remote.model.AuthRequest
-import pedro.com.ioasystestekotlin.data.interactor.RepositoryInterface
 import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.initializing
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.loading
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.success
-import pedro.com.ioasystestekotlin.domain.model.mapper.validateEmail
-import pedro.com.ioasystestekotlin.domain.model.mapper.validatePassword
-import retrofit2.Response
+import pedro.com.ioasystestekotlin.domain.ext.validateEmail
+import pedro.com.ioasystestekotlin.domain.ext.validatePassword
+import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUse
 
 class LoginViewModel(application: Application,
-                     repository: RepositoryInterface
+                     signCaseUse: SignCaseUse
 ) : AndroidViewModel(application), LifecycleObserver {
 
-    private var mRepository = repository
+    private var mRepository = signCaseUse
     private var mUser = MutableLiveData<User>()
     private var mState = MutableLiveData<ViewState<String>>()
-    private lateinit var mLoginSubscribe: DisposableObserver<Response<AuthRequest>>
 
     init {
         mUser.value = User()
@@ -45,12 +41,12 @@ class LoginViewModel(application: Application,
 
             mState.postValue(loading())
 
-            mLoginSubscribe = mRepository.authentication(
+            mRepository.sign(
                     email = email, password =  password,
-                    successLogin = {
+                    onSuccess = {
                         mState.postValue(success())
                     },
-                    errorLogin = {
+                    onErrorLogin = {
                         mState.postValue(failure(it))
                     }
             )
@@ -87,7 +83,7 @@ class LoginViewModel(application: Application,
     }
 
     override fun onCleared() {
-        mLoginSubscribe.dispose()
+        mRepository.disposeLogin()
         super.onCleared()
     }
 }

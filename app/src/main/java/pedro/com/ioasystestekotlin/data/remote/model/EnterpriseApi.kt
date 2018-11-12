@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.remote.model
+package pedro.com.ioasystestekotlin.data.remote.model
 
 data class EnterpriseApi(
         var enterprise_name: String? = "",

@@ -4,50 +4,41 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import io.reactivex.observers.DisposableObserver
+import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCase
 import pedro.com.ioasystestekotlin.domain.model.Enterprise
 import pedro.com.ioasystestekotlin.domain.model.StringObservable
-import pedro.com.ioasystestekotlin.data.interactor.RepositoryInterface
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.ViewState
-import pedro.com.ioasystestekotlin.remote.model.ListEnterprises
-import retrofit2.Response
 
-class HomeViewModel(app: Application, repository: RepositoryInterface) : AndroidViewModel(app) {
+class HomeViewModel(app: Application, search: SearchUseCase) : AndroidViewModel(app) {
     var searchField = MutableLiveData<StringObservable>()
     private var mState = MutableLiveData<ViewState<List<Enterprise>>>()
-    private val mRepository = repository
-    private lateinit var mHomeSubscribe: DisposableObserver<Response<ListEnterprises>>
+    private val mRepository = search
 
     init {
         searchField.value = StringObservable()
-        mState.value = ViewState(data = null ,state = State.WAITING_DATA)
+        mState.value = ViewState(data = null, state = State.WAITING_DATA)
     }
 
     fun searchListener() {
         val searchableEnterprises = searchField.value?.text ?: ""
         mState.postValue(ViewState.loading())
 
-        mHomeSubscribe = getDisposeObserver(searchableEnterprises)
+        mRepository.searchEnterprise(
+                query = searchableEnterprises,
+                searchFound = { list ->
+                    mState.postValue(ViewState.success(list))
+                },
+                errorSearch = { throwable ->
+                    mState.postValue(ViewState.failure(throwable))
+                }
+        )
     }
 
     fun getState(): LiveData<ViewState<List<Enterprise>>> = mState
 
-    private fun getDisposeObserver(searchableEnterprises: String): DisposableObserver<Response<ListEnterprises>> {
-        return mRepository
-                .searchEnterprises(
-                        queryName = searchableEnterprises,
-                        searchFound = { list ->
-                            mState.postValue(ViewState.success(list))
-                        },
-                        errorSearch = { throwable ->
-                            mState.postValue(ViewState.failure(throwable))
-                        }
-                )
-    }
-
     override fun onCleared() {
-        mHomeSubscribe.dispose()
+        mRepository.disposeSearch()
         super.onCleared()
     }
 

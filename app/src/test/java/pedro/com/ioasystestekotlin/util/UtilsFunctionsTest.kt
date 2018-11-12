@@ -2,8 +2,8 @@ package pedro.com.ioasystestekotlin.util
 
 import org.junit.Assert.assertFalse
 import org.junit.Test
-import pedro.com.ioasystestekotlin.domain.model.mapper.validateEmail
-import pedro.com.ioasystestekotlin.domain.model.mapper.validatePassword
+import pedro.com.ioasystestekotlin.domain.ext.validateEmail
+import pedro.com.ioasystestekotlin.domain.ext.validatePassword
 
 class UtilsFunctionsTest {
 // Email

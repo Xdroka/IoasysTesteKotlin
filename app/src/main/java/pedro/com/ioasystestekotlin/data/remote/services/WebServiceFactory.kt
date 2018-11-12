@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.remote.services
+package pedro.com.ioasystestekotlin.data.remote.services
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.Retrofit

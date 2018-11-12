@@ -1,7 +1,7 @@
-package pedro.com.ioasystestekotlin.data.mapper
+package pedro.com.ioasystestekotlin.data.ext
 
 import android.content.Context
-import pedro.com.ioasystestekotlin.remote.model.HeaderApi
+import pedro.com.ioasystestekotlin.data.remote.model.HeaderApi
 
 
 fun Context.saveHeader(header: HeaderApi) {
@@ -24,4 +24,12 @@ fun Context.getHeader(): HeaderApi {
             sharedPreference.getString("uid", "") ?: "",
             sharedPreference.getString("client", "") ?: ""
     )
+}
+
+fun HeaderApi.headerMapper(): HashMap<String, String> {
+    val headerHashMap = HashMap<String, String>()
+    headerHashMap["access-token"] = access_token
+    headerHashMap["client"] = client
+    headerHashMap["uid"] = uid
+    return headerHashMap
 }

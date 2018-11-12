@@ -10,7 +10,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_about.*
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
-import pedro.com.ioasystestekotlin.remote.model.EnterpriseApi
+import pedro.com.ioasystestekotlin.data.remote.model.EnterpriseApi
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.about.AboutViewModel
 import pedro.com.ioasystestekotlin.util.downloadPhoto

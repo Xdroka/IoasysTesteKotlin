@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import pedro.com.ioasystestekotlin.R
-import pedro.com.ioasystestekotlin.remote.services.WebService
+import pedro.com.ioasystestekotlin.data.remote.services.WebService
 
 fun ImageView.downloadPhoto(photoUrl: String, enabledReDownload: Boolean = false) {
     if (enabledReDownload && photoUrl == "") {
