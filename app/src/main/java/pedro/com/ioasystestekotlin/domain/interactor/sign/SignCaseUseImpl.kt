@@ -1,19 +1,16 @@
 package pedro.com.ioasystestekotlin.domain.interactor.sign
 
-import io.reactivex.observers.DisposableObserver
-import pedro.com.ioasystestekotlin.data.remote.sign.SignAuth
-import pedro.com.ioasystestekotlin.data.remote.model.AuthRequest
+import kotlinx.coroutines.experimental.Job
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
-import retrofit2.Response
+import pedro.com.ioasystestekotlin.data.remote.sign.SignAuth
 
 class SignCaseUseImpl(private val authProvider: SignAuth) : SignCaseUse {
-
-    lateinit var disposable: DisposableObserver<Response<AuthRequest>>
+    private var job: Job = Job()
 
     override fun sign(email: String, password: String,
-                      onSuccess: () -> Unit,
-                      onErrorLogin: (t: Throwable) -> Unit) {
-        disposable = authProvider.loginAccess(
+                              onSuccess: () -> Unit,
+                              onErrorLogin: (t: Throwable) -> Unit) {
+        job = authProvider.loginAccess(
                 UserApi(email = email,
                         password = password
                 ),
@@ -21,8 +18,8 @@ class SignCaseUseImpl(private val authProvider: SignAuth) : SignCaseUse {
         )
     }
 
-    override fun disposeLogin() {
-        disposable.dispose()
+    override fun cancelJob() {
+        job.cancel()
     }
 
 }

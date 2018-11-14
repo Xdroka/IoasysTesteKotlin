@@ -1,6 +1,6 @@
 package pedro.com.ioasystestekotlin.data.remote.services
 
-import io.reactivex.Flowable
+import kotlinx.coroutines.experimental.Deferred
 import pedro.com.ioasystestekotlin.data.remote.model.AuthRequest
 import pedro.com.ioasystestekotlin.data.remote.model.ListEnterprises
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
@@ -9,12 +9,12 @@ import retrofit2.http.*
 
 interface WebService {
     @POST(AUTH_PATH)
-    fun authentication(@Body userApi: UserApi): Flowable<Response<AuthRequest>>
+    fun authentication(@Body userApi: UserApi): Deferred<Response<AuthRequest>>
 
     @GET(ENTERPRISES_PATH)
     fun searchEnterprise(@Query(QUERY_NAME) nameSearchable: String,
                          @HeaderMap headers: HashMap<String, String>
-    ): Flowable<Response<ListEnterprises>>
+    ): Deferred<Response<ListEnterprises>>
 
     companion object {
         const val BASE_URL_PHOTO = "http://empresas.ioasys.com.br"

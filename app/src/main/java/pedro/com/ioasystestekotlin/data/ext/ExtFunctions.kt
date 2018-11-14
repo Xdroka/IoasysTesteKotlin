@@ -33,3 +33,24 @@ fun HeaderApi.headerMapper(): HashMap<String, String> {
     headerHashMap["uid"] = uid
     return headerHashMap
 }
+
+fun Context.putSharedPreferences(keyToAccess: String,keys: Map<String ,String>, mode: Int = 0){
+    val editor = getSharedPreferences(keyToAccess, mode).edit()
+    keys.forEach{
+        editor.putString(it.key, it.value)
+    }
+    editor.apply()
+}
+
+fun Context.getSharedPreferences(keyToAcess: String,
+                                 keys: List<String>,
+                                 mode: Int = 0): Map<String, String>{
+    val sp = getSharedPreferences(keyToAcess, mode)
+    lateinit var mapKeys: HashMap<String,String>
+    keys.forEach{
+        mapKeys[it] = sp.getString(it,"") ?: ""
+    }
+    return mapKeys
+}
+
+

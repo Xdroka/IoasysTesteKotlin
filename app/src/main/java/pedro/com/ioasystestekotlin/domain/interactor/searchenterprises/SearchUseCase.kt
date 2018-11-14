@@ -7,5 +7,5 @@ interface SearchUseCase {
                          searchFound: (List<Enterprise>) -> Unit,
                          errorSearch: (t: Throwable) -> Unit)
 
-    fun disposeSearch()
+    fun cancelJob()
 }

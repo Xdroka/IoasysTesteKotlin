@@ -8,11 +8,11 @@ import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
 
 val presentationModule = module {
     //Login View Model
-    viewModel{ LoginViewModel(get(), get ()) }
+    viewModel{ LoginViewModel(get()) }
 
     //Home View Model
-    viewModel{ HomeViewModel(get(), get()) }
+    viewModel{ HomeViewModel(get()) }
 
     //About View Model
-    viewModel { AboutViewModel(get(), get()) }
+    viewModel { AboutViewModel(get()) }
 }

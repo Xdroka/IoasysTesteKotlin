@@ -1,16 +1,13 @@
 package pedro.com.ioasystestekotlin.data.remote.searchenterprises
 
 import android.app.Application
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.launch
 import pedro.com.ioasystestekotlin.data.ext.getHeader
 import pedro.com.ioasystestekotlin.data.ext.headerMapper
-import pedro.com.ioasystestekotlin.data.remote.model.ListEnterprises
 import pedro.com.ioasystestekotlin.data.remote.model.ext.convertListOfEnterprises
 import pedro.com.ioasystestekotlin.data.remote.services.WebService
 import pedro.com.ioasystestekotlin.domain.model.Enterprise
-import retrofit2.Response
 
 class SearchEnterprisesImpl(val app: Application,
                             private val service: WebService) : SearchEnterprises {
@@ -18,33 +15,22 @@ class SearchEnterprisesImpl(val app: Application,
     override fun searchEnterprise(query: String,
                                   searchFound: (List<Enterprise>) -> Unit,
                                   errorSearch: (t: Throwable) -> Unit
-    ): DisposableObserver<Response<ListEnterprises>> =
-        service.searchEnterprise(query, app.getHeader().headerMapper())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toObservable()
-                .subscribeWith(object : DisposableObserver<Response<ListEnterprises>>() {
-                    override fun onComplete() {}
+    ): Job = launch {
 
-                    override fun onNext(response: Response<ListEnterprises>) {
-                        if (!response.isSuccessful) {
-                            errorSearch(
-                                    Exception(
-                                            "HTTP: ${response.code()} - ${response.message()}"
-                                    )
-                            )
-                            return
-                        }
-                        searchFound(
-                                response.body()?.enterprises?.convertListOfEnterprises()
-                                        ?: listOf(Enterprise())
-                        )
+        val response = service.searchEnterprise(
+                nameSearchable = query,
+                headers = app.getHeader().headerMapper()
+        ).await()
 
-                    }
+        if (!response.isSuccessful) {
+            errorSearch(Exception("HTTP: ${response.code()} - ${response.message()}"))
+            return@launch
+        }
 
-                    override fun onError(exception: Throwable) {
-                        errorSearch(exception)
-                    }
-                })
+        searchFound(
+                response.body()?.enterprises?.convertListOfEnterprises()
+                        ?: listOf(Enterprise())
+        )
 
+    }
 }
