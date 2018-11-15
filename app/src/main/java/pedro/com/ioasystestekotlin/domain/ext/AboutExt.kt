@@ -1,7 +1,7 @@
 package pedro.com.ioasystestekotlin.domain.ext
 
 import android.content.Context
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 
 fun Context.putEnterprise(enterprise: Enterprise) {
     val editor = getSharedPreferences("enterprise", 0).edit()

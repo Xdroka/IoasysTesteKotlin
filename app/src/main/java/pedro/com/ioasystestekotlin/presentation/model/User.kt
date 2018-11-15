@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.domain.model
+package pedro.com.ioasystestekotlin.presentation.model
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable

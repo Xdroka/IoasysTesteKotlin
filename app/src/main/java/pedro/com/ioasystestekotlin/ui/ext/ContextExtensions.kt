@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.util
+package pedro.com.ioasystestekotlin.ui.ext
 
 import android.app.Activity
 import android.content.Context
@@ -20,3 +20,4 @@ inline fun <reified T : Activity> Activity.startActivityAndFinish(mapKeys: Map<S
     startActivity<T>(mapKeys)
     finish()
 }
+

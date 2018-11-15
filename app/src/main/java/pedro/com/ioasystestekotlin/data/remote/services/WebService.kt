@@ -13,7 +13,7 @@ interface WebService {
 
     @GET(ENTERPRISES_PATH)
     fun searchEnterprise(@Query(QUERY_NAME) nameSearchable: String,
-                         @HeaderMap headers: HashMap<String, String>
+                         @HeaderMap headers: Map<String, String>
     ): Deferred<Response<ListEnterprises>>
 
     companion object {

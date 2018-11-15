@@ -1,7 +1,6 @@
 package pedro.com.ioasystestekotlin.ui.about
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,11 +10,10 @@ import kotlinx.android.synthetic.main.activity_about.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityAboutBinding
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.about.AboutViewModel
-import pedro.com.ioasystestekotlin.util.downloadPhoto
-import pedro.com.ioasystestekotlin.util.toast
+import pedro.com.ioasystestekotlin.ui.ext.downloadPhoto
+import pedro.com.ioasystestekotlin.ui.ext.toast
 
 class AboutActivity : AppCompatActivity() {
 

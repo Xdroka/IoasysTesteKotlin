@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.util
+package pedro.com.ioasystestekotlin.ui.ext
 
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -10,35 +10,34 @@ import pedro.com.ioasystestekotlin.data.remote.services.WebService
 fun ImageView.downloadPhoto(photoUrl: String, enabledReDownload: Boolean = false) {
     if (enabledReDownload && photoUrl == "") {
         this.setImageResource(R.drawable.imageReport)
-    } else {
-        val imageFailure = R.drawable.download_icon
-
+        return
+    }
+    val imageFailure = R.drawable.download_icon
     Glide.with(context)
             .load(WebService.BASE_URL_PHOTO + photoUrl)
             .placeholder(R.drawable.loading)
             .error(imageFailure)
             .into(this)
-    }
 }
 
 fun View.show() {
     this.visibility = View.VISIBLE
 }
 
-fun View.hide(){
+fun View.hide() {
     this.visibility = View.GONE
 }
 
-fun View.turnIn(){
+fun View.turnIn() {
     this.isEnabled = true
 }
 
-fun View.turnOff(){
+fun View.turnOff() {
     this.isEnabled = false
 }
 
 fun SearchView.dataBinding(onSubmit: () -> Unit,
-                           onTextChanged: (newText: String) -> Unit){
+                           onTextChanged: (newText: String) -> Unit) {
     queryHint = context.getString(R.string.search_hint)
 
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {

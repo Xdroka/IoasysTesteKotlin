@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.EnterpriseListBinding
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
-import pedro.com.ioasystestekotlin.util.downloadPhoto
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
+import pedro.com.ioasystestekotlin.ui.ext.downloadPhoto
 import pedro.com.ioasystestekotlin.ui.home.OnItemAdapterClickListener
 
 class EnterprisesAdapter(private var enterpriseList: List<Enterprise>,

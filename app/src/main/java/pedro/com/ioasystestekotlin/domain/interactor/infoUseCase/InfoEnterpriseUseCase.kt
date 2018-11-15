@@ -1,6 +1,6 @@
 package pedro.com.ioasystestekotlin.domain.interactor.infoUseCase
 
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 
 interface InfoEnterpriseUseCase {
 

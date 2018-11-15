@@ -1,6 +1,6 @@
 package pedro.com.ioasystestekotlin.data.remote.model.ext
 
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 import pedro.com.ioasystestekotlin.data.remote.model.EnterpriseApi
 
 fun List<EnterpriseApi>.convertListOfEnterprises() : List<Enterprise>{

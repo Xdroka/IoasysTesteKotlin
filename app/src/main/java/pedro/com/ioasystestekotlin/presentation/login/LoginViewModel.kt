@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel
 import pedro.com.ioasystestekotlin.domain.ext.validateEmail
 import pedro.com.ioasystestekotlin.domain.ext.validatePassword
 import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUse
-import pedro.com.ioasystestekotlin.domain.model.User
+import pedro.com.ioasystestekotlin.presentation.model.User
 import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.initializing
@@ -23,7 +23,7 @@ class LoginViewModel(private val signCaseUse: SignCaseUse) : ViewModel() {
     }
 
     fun onClick() {
-//        setUserValid()
+        setUserValid()
         val email = mUser.value?._email ?: ""
         val password = mUser.value?._password ?: ""
         val isEmail = email.validateEmail()

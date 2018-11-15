@@ -12,13 +12,13 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityHomeBinding
 import pedro.com.ioasystestekotlin.domain.ext.putEnterprise
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
-import pedro.com.ioasystestekotlin.domain.model.StringObservable
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
+import pedro.com.ioasystestekotlin.presentation.model.StringObservable
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.home.HomeViewModel
 import pedro.com.ioasystestekotlin.ui.about.AboutActivity
+import pedro.com.ioasystestekotlin.ui.ext.*
 import pedro.com.ioasystestekotlin.ui.home.enterpriseslist.EnterprisesAdapter
-import pedro.com.ioasystestekotlin.util.*
 
 class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
@@ -80,9 +80,7 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
                     }
                 }
 
-                else -> {
-//                    do nothing
-                }
+                else -> { /*do nothing*/ }
             }
         })
     }

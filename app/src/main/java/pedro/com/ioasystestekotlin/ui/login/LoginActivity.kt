@@ -1,9 +1,11 @@
 package pedro.com.ioasystestekotlin.ui.login
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -12,8 +14,8 @@ import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
 import pedro.com.ioasystestekotlin.presentation.State
 import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
 import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
+import pedro.com.ioasystestekotlin.ui.ext.*
 import pedro.com.ioasystestekotlin.ui.home.HomeActivity
-import pedro.com.ioasystestekotlin.util.*
 
 class LoginActivity : AppCompatActivity() {
     private val mViewModel by viewModel<LoginViewModel>()
@@ -24,11 +26,11 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.vm = mViewModel
         creatingObservers()
-
         binding.executePendingBindings()
     }
 
     private fun creatingObservers() {
+
         mViewModel.getState().observe(this, Observer { viewState ->
             initializingLayout()
 

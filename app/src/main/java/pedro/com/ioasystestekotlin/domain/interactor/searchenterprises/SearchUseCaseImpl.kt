@@ -2,7 +2,7 @@ package pedro.com.ioasystestekotlin.domain.interactor.searchenterprises
 
 import kotlinx.coroutines.experimental.Job
 import pedro.com.ioasystestekotlin.data.remote.searchenterprises.SearchEnterprises
-import pedro.com.ioasystestekotlin.domain.model.Enterprise
+import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 
 class SearchUseCaseImpl(private val search: SearchEnterprises) : SearchUseCase {
 
