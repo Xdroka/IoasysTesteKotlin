@@ -1,65 +1,127 @@
 package pedro.com.ioasystestekotlin.data.remote.sign
 
 import android.app.Application
+import kotlinx.coroutines.experimental.launch
+import okhttp3.Headers
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.junit.Assert.assertFalse
-import org.junit.BeforeClass
+import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mock
 import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.doThrow
 import org.mockito.MockitoAnnotations
-import pedro.com.ioasystestekotlin.data.ext.isValid
 import pedro.com.ioasystestekotlin.data.ext.putSharedPreferences
-import pedro.com.ioasystestekotlin.data.remote.RANDOM_STRING
+import pedro.com.ioasystestekotlin.data.remote.model.AuthRequest
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
 import pedro.com.ioasystestekotlin.data.remote.services.WebService
+import retrofit2.HttpException
+import retrofit2.Response
+
 
 class SignAuthImplTest {
-    @Mock private lateinit var app: Application
-    @Mock private lateinit var service: WebService
+    @Mock
+    private lateinit var app: Application
+    @Mock
+    private lateinit var service: WebService
+    private lateinit var response: Response<AuthRequest>
     private lateinit var signAuth: SignAuth
+    private val userApi = UserApi()
 
-    @BeforeClass
+    @Before
     fun setupMock() {
         MockitoAnnotations.initMocks(this)
         signAuth = SignAuthImpl(app, service)
-
     }
 
     @Test
     fun signCorrect() {
         var result = false
-        doReturn(Unit).`when`(app).putSharedPreferences(RANDOM_STRING, mapOf())
-
+        initResponse(true, true)
+        launch {
+            doReturn(response).`when`(service).authentication(userApi).await()
+        }
         signAuth.loginAccess(
-                UserApi(EMAIL_FIELD, PASSWORD_FIELD),
+                userApi = userApi,
                 successLogin = {
-                    result = it.isValid()
+                    print("GG")
+                    result = true
                 },
-                errorLogin = {}
+                errorLogin = {
+                    result = false
+                    print(it.message)
+                }
         )
 
-        assert(result)
+        assertTrue(result)
     }
 
     @Test
     fun signIncorrect() {
         var result = false
-        doReturn(Unit).`when`(app).putSharedPreferences(RANDOM_STRING, mapOf())
+        doReturn(Unit).`when`(app).putSharedPreferences("headers", mapOf())
+        initResponse(true, false)
+        launch {
+            doReturn(response).`when`(service).authentication(userApi).await()
+        }
 
         signAuth.loginAccess(
-                UserApi(RANDOM_STRING, RANDOM_STRING),
+                userApi = userApi,
                 successLogin = {
-                    result = it.isValid()
+                    result = true
                 },
-                errorLogin = {}
+                errorLogin = {
+                    print(it.message)
+                }
         )
 
         assertFalse(result)
     }
 
-    companion object {
-        const val EMAIL_FIELD = "testeapple@ioasys.com.br"
-        const val PASSWORD_FIELD = "12341234"
+    @Test
+    fun failConnection() {
+        var result = true
+        initResponse(isSuccessful = false, code = 408)
+        launch {
+            doThrow(HttpException(response)).`when`(service).authentication(any()).await()
+        }
+
+        signAuth.loginAccess(
+                userApi = userApi,
+                successLogin = {},
+                errorLogin = {
+                    print(it.message)
+                    result = false
+                }
+        )
+
+        assertFalse(result)
     }
 
+
+    private fun initResponse(isSuccessful: Boolean, success: Boolean = true, code: Int = 200) {
+        response = if (isSuccessful) {
+            Response.success(
+                    AuthRequest(success),
+                    Headers.of(
+                            mutableMapOf(
+                                    Pair(RANDOM_STRING, RANDOM_STRING)
+                            )
+                    )
+            )
+        } else {
+            Response.error(code,
+                    ResponseBody.create(MediaType.parse(RANDOM_STRING),
+                            RANDOM_STRING
+                    )
+            )
+        }
+    }
+
+    companion object {
+        const val RANDOM_STRING = "RANDOM"
+    }
 }

@@ -4,10 +4,10 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.Coroutin
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-inline fun <reified T> createWebService(): T =
+inline fun <reified T> createWebService(baseUrl: String): T =
         Retrofit
                 .Builder()
-                .baseUrl(WebService.BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()

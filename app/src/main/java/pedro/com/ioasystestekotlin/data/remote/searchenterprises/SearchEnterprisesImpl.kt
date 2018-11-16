@@ -3,6 +3,7 @@ package pedro.com.ioasystestekotlin.data.remote.searchenterprises
 import android.app.Application
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withTimeoutOrNull
 import pedro.com.ioasystestekotlin.data.ext.getSharedPreferences
 import pedro.com.ioasystestekotlin.data.remote.model.ext.convertListOfEnterprises
 import pedro.com.ioasystestekotlin.data.remote.services.WebService
@@ -15,7 +16,7 @@ class SearchEnterprisesImpl(val app: Application,
                                   searchFound: (List<Enterprise>) -> Unit,
                                   errorSearch: (t: Throwable) -> Unit
     ): Job {
-        return launch {
+        return launch    {
 
             val response = service.searchEnterprise(
                     nameSearchable = query,

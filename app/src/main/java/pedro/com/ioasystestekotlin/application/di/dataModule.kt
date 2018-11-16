@@ -9,8 +9,10 @@ import pedro.com.ioasystestekotlin.data.remote.services.WebService
 import pedro.com.ioasystestekotlin.data.remote.services.createWebService
 
 val dataModule = module{
+    single{ WebService.BASE_URL }
+
     //web service
-    single { createWebService<WebService>() }
+    single { createWebService<WebService>(get()) }
 
     // SignAuth request
     single { SignAuthImpl(get(), get()) as  SignAuth }
