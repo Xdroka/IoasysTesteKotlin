@@ -1,20 +1,20 @@
 package pedro.com.ioasystestekotlin.application.di
 
 import org.koin.dsl.module.module
-import pedro.com.ioasystestekotlin.domain.interactor.infoUseCase.InfoEnterpriseUseCase
-import pedro.com.ioasystestekotlin.domain.interactor.infoUseCase.InfoEnterpriseUseCaseImpl
-import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCase
-import pedro.com.ioasystestekotlin.domain.interactor.searchenterprises.SearchUseCaseImpl
-import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUse
-import pedro.com.ioasystestekotlin.domain.interactor.sign.SignCaseUseImpl
+import pedro.com.ioasystestekotlin.domain.usecase.info.InfoEnterpriseUseCase
+import pedro.com.ioasystestekotlin.domain.usecase.info.InfoEnterpriseUseCaseImpl
+import pedro.com.ioasystestekotlin.domain.usecase.searchenterprises.SearchEnterpriseUseCase
+import pedro.com.ioasystestekotlin.domain.usecase.searchenterprises.SearchEnterpriseUseCaseImpl
+import pedro.com.ioasystestekotlin.domain.usecase.login.LoginCaseUse
+import pedro.com.ioasystestekotlin.domain.usecase.login.LoginCaseUseImpl
 
 
 val domainModule = module{
-//    sign use case
-    single { SignCaseUseImpl(get()) as SignCaseUse }
+//    signIn use case
+    single { LoginCaseUseImpl(get()) as LoginCaseUse }
 
 //    search enterprises use case
-    single { SearchUseCaseImpl(get()) as SearchUseCase }
+    single { SearchEnterpriseUseCaseImpl(get()) as SearchEnterpriseUseCase }
 
 // info Enterprise use case
     single { InfoEnterpriseUseCaseImpl(get()) as InfoEnterpriseUseCase }

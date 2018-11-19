@@ -1,27 +1,27 @@
-package pedro.com.ioasystestekotlin.data.remote.sign
+package pedro.com.ioasystestekotlin.data.remote.repository.login
 
 import android.app.Application
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 import pedro.com.ioasystestekotlin.data.ext.putSharedPreferences
 import pedro.com.ioasystestekotlin.data.remote.model.AuthRequest
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
-import pedro.com.ioasystestekotlin.data.remote.services.WebService
+import pedro.com.ioasystestekotlin.data.remote.services.UserWebService
 import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-class SignAuthImpl(val app: Application,
-                   private val service: WebService) : SignAuth {
+class LoginImpl(val app: Application,
+                private val userService: UserWebService) : Login {
 
-    override fun loginAccess(userApi: UserApi,
+    override suspend fun loginAccess(userApi: UserApi,
                              successLogin: () -> Unit,
                              errorLogin: (t: Throwable) -> Unit
-    ): Job = launch(CommonPool) {
+    ): Job =
+
+            CoroutineScope(Dispatchers.Default).launch {
         try {
-            val response: Response<AuthRequest> = service.authentication(userApi).await()
+            val response: Response<AuthRequest> = userService.authentication(userApi).await()
 
             if (!response.isSuccessful) {
                 errorLogin(Exception(LoginFieldState.loginInvalid()))
@@ -32,6 +32,7 @@ class SignAuthImpl(val app: Application,
                 errorLogin(Exception(LoginFieldState.loginInvalid()))
                 return@launch
             }
+
 
             val headers = response.headers()
 

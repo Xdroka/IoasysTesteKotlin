@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.domain.interactor.infoUseCase
+package pedro.com.ioasystestekotlin.domain.usecase.info
 
 import android.app.Application
 import pedro.com.ioasystestekotlin.domain.ext.getEnterprise

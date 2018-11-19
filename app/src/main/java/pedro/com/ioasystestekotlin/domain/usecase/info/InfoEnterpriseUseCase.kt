@@ -1,4 +1,4 @@
-package pedro.com.ioasystestekotlin.domain.interactor.infoUseCase
+package pedro.com.ioasystestekotlin.domain.usecase.info
 
 import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 

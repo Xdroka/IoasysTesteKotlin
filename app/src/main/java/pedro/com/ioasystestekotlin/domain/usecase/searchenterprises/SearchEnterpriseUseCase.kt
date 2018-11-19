@@ -1,8 +1,8 @@
-package pedro.com.ioasystestekotlin.domain.interactor.searchenterprises
+package pedro.com.ioasystestekotlin.domain.usecase.searchenterprises
 
 import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 
-interface SearchUseCase {
+interface SearchEnterpriseUseCase {
     fun searchEnterprise(query: String,
                          searchFound: (List<Enterprise>) -> Unit,
                          errorSearch: (t: Throwable) -> Unit)

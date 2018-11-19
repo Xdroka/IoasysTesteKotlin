@@ -1,23 +1,29 @@
 package pedro.com.ioasystestekotlin.application.di
 
 import org.koin.dsl.module.module
-import pedro.com.ioasystestekotlin.data.remote.sign.SignAuth
-import pedro.com.ioasystestekotlin.data.remote.sign.SignAuthImpl
-import pedro.com.ioasystestekotlin.data.remote.searchenterprises.SearchEnterprises
-import pedro.com.ioasystestekotlin.data.remote.searchenterprises.SearchEnterprisesImpl
-import pedro.com.ioasystestekotlin.data.remote.services.WebService
+import pedro.com.ioasystestekotlin.data.remote.repository.login.Login
+import pedro.com.ioasystestekotlin.data.remote.repository.login.LoginImpl
+import pedro.com.ioasystestekotlin.data.remote.repository.enterprise.EnterpriseRepository
+import pedro.com.ioasystestekotlin.data.remote.repository.enterprise.EnterpriseRepositoryImpl
+import pedro.com.ioasystestekotlin.data.remote.services.EnterprisesWebService
+import pedro.com.ioasystestekotlin.data.remote.services.UserWebService
 import pedro.com.ioasystestekotlin.data.remote.services.createWebService
+import pedro.com.ioasystestekotlin.data.remote.services.getBaseUrl
 
 val dataModule = module{
-    single{ WebService.BASE_URL }
+    // Base URL
+    single{ getBaseUrl() }
 
-    //web service
-    single { createWebService<WebService>(get()) }
+    //User Web Service
+    single { createWebService<UserWebService>(get()) }
 
-    // SignAuth request
-    single { SignAuthImpl(get(), get()) as  SignAuth }
+    //Enterprises web service
+    single { createWebService<EnterprisesWebService>(get()) }
+
+    // Login request
+    single { LoginImpl(get(), get()) as  Login }
 
     // Search enterprises request
-    single { SearchEnterprisesImpl(get(), get()) as SearchEnterprises }
+    single { EnterpriseRepositoryImpl(get(), get()) as EnterpriseRepository }
 
 }
