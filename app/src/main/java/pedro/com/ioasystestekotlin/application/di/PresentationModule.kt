@@ -7,7 +7,7 @@ import pedro.com.ioasystestekotlin.presentation.home.HomeViewModel
 import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
 
 val presentationModule = module {
-    //Login View Model
+    //LoginRepository View Model
     viewModel{ LoginViewModel(get()) }
 
     //Home View Model

@@ -16,7 +16,7 @@ import pedro.com.ioasystestekotlin.ui.ext.*
 import pedro.com.ioasystestekotlin.ui.home.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
-    private val mViewModel by viewModel<LoginViewModel>()
+    private val mViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

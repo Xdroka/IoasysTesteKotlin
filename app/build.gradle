@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -39,19 +41,29 @@ dependencies {
 
     implementation "com.android.support:design:$android_support_version"
     implementation "com.android.support:cardview-v7:$android_support_version"
+
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_compiler"//4.8.0
+
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+
+    //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
+    //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
-//    implementation "ru.gildor.coroutines:kotlin-coroutines-retrofit:$coroutine_retrofit_version"
-//    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$coroutine_adapter_version"
+    //RX
+    def rx_android_version = "2.1.0"
+    def rx_java_version = "2.2.3"
 
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+
+    //Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
 
@@ -59,10 +71,12 @@ dependencies {
     implementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
 
+    //Room
+    def room_version = "1.1.1"
+
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+
 }
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
+
 
