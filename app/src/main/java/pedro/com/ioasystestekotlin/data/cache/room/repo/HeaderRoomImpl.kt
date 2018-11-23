@@ -1,7 +1,6 @@
 package pedro.com.ioasystestekotlin.data.cache.room.repo
 
 import pedro.com.ioasystestekotlin.application.MyApplication
-import pedro.com.ioasystestekotlin.data.Result
 import pedro.com.ioasystestekotlin.data.cache.entities.HeaderAccess
 
 class HeaderRoomImpl : HeaderRoom {

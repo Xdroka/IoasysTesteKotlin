@@ -2,6 +2,7 @@ package pedro.com.ioasystestekotlin.data.ext
 
 import android.content.Context
 import pedro.com.ioasystestekotlin.data.remote.model.HeaderApi
+
 //
 //fun HeaderApi.headerMapper(): HashMap<String, String> {
 //    val headerHashMap = HashMap<String, String>()
@@ -31,4 +32,6 @@ fun Context.getSharedPreferences(keyToAccess: String,
     return mapKeys
 }
 
+fun Context.getStringByPreferences(keyToAccess: String, key: String) =
+        getSharedPreferences(keyToAccess, listOf(key))[key] ?: ""
 

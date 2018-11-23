@@ -11,10 +11,10 @@ import pedro.com.ioasystestekotlin.domain.usecase.searchenterprises.SearchEnterp
 
 val domainModule = module{
 //    signIn use case
-    single { LoginCaseUseImpl(get(), get()) as LoginCaseUse }
+    single { LoginCaseUseImpl(get(), get(), get()) as LoginCaseUse }
 
 //    search enterprises use case
-    single { SearchEnterpriseUseCaseImpl(get()) as SearchEnterpriseUseCase }
+    single { SearchEnterpriseUseCaseImpl(get(), get(), get()) as SearchEnterpriseUseCase }
 
 // info Enterprise use case
     single { InfoEnterpriseUseCaseImpl(get()) as InfoEnterpriseUseCase }

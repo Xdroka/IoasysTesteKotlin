@@ -23,10 +23,10 @@ val dataModule = module{
     single { createWebService<EnterprisesWebService>(get()) }
 
     // LoginRepository request
-    single { LoginRepositoryImpl(get(), get()) as  LoginRepository }
+    single { LoginRepositoryImpl(get()) as  LoginRepository }
 
     // Search enterprises request
-    single { EnterpriseRepositoryImpl(get(), get()) as EnterpriseRepository }
+    single { EnterpriseRepositoryImpl(get()) as EnterpriseRepository }
 
     //header Repository in room
     single { HeaderRoomImpl() as HeaderRoom }

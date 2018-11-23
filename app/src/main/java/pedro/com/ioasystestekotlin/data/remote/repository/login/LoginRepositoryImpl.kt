@@ -1,20 +1,16 @@
 package pedro.com.ioasystestekotlin.data.remote.repository.login
 
 import android.app.Application
-import pedro.com.ioasystestekotlin.data.ext.putSharedPreferences
+import pedro.com.ioasystestekotlin.data.ResultRequest
 import pedro.com.ioasystestekotlin.data.remote.model.AuthRequest
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
 import pedro.com.ioasystestekotlin.data.remote.services.UserWebService
-import pedro.com.ioasystestekotlin.data.Result
-import pedro.com.ioasystestekotlin.data.ResultRequest
 import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
-import pedro.com.ioasystestekotlin.presentation.model.Enterprise
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-class LoginRepositoryImpl(val app: Application,
-                          private val userService: UserWebService) : LoginRepository {
+class LoginRepositoryImpl(private val userService: UserWebService) : LoginRepository {
 
     override suspend fun loginAccess(userApi: UserApi): ResultRequest<Map<String, String>> {
         try {
