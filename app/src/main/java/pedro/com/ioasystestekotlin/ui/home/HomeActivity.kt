@@ -26,37 +26,34 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
 
-        val binding: ActivityHomeBinding = DataBindingUtil
-                .setContentView(this, R.layout.activity_home)
-        binding.vm = mViewModel
-        setSupportActionBar(binding.toolbarSearchId)
+        setSupportActionBar(toolbarSearchId)
 
         creatingObservers()
-        binding.executePendingBindings()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val result = super.onCreateOptionsMenu(menu)
-
-        val inflater = menuInflater
-        inflater.inflate(R.menu.search_menu, menu)
-
-        title = ""
-        val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView
-
-        searchView.dataBinding(
-                onSubmit = {
-                    mViewModel.searchListener()
-                },
-                onTextChanged = { newText ->
-                    mViewModel.searchField.value = StringObservable(newText)
-                    msgTextView.hide()
-                }
-        )
-
-        return result
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val result = super.onCreateOptionsMenu(menu)
+//
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.search_menu, menu)
+//
+//        title = ""
+//        val searchView = menu?.findItem(R.id.searchViewId)?.actionView as SearchView
+//
+//        searchView.dataBinding(
+//                onSubmit = {
+//                    mViewModel.searchListener()
+//                },
+//                onTextChanged = { newText ->
+//                    mViewModel.searchField.value = StringObservable(newText)
+//                    msgTextView.hide()
+//                }
+//        )
+//
+//        return result
+//    }
 
     private fun creatingObservers() {
         mViewModel.getState().observe(this, Observer { viewState ->
@@ -64,7 +61,7 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
 
             when (viewState?.state) {
                 State.SUCCESS -> {
-                    msgTextView.hide()
+//                    msgTextView.hide()
                     mViewModel.getState().value?.data?.let { list ->
                         setupRecycler(list)
                     }
@@ -86,10 +83,10 @@ class HomeActivity : AppCompatActivity(), OnItemAdapterClickListener {
     }
 
     private fun setupRecycler(enterpriseList: List<Enterprise>) {
-        enterpriseRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity)
-            adapter = EnterprisesAdapter(enterpriseList, this@HomeActivity)
-        }
+//        enterpriseRecyclerView.apply {
+//            layoutManager = LinearLayoutManager(this@HomeActivity)
+//            adapter = EnterprisesAdapter(enterpriseList, this@HomeActivity)
+//        }
     }
 
     override fun onItemClick(enterprise: Enterprise) {

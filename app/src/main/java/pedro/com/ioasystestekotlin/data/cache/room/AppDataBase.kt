@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase
 import pedro.com.ioasystestekotlin.data.cache.dao.HeaderAccessDao
 import pedro.com.ioasystestekotlin.data.cache.entities.HeaderAccess
 
-@Database(entities = [HeaderAccess::class], version = 1)
+@Database(entities = [HeaderAccess::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun headerAccessDao(): HeaderAccessDao
 }

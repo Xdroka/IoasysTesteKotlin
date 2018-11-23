@@ -1,6 +1,6 @@
 package pedro.com.ioasystestekotlin.domain.usecase.login
 
-interface LoginCaseUse {
+interface LoginUseCase {
 
     fun signIn(email: String, password: String,
                onSuccess: () -> Unit,

@@ -10,7 +10,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import pedro.com.ioasystestekotlin.R
 import pedro.com.ioasystestekotlin.databinding.ActivityLoginBinding
 import pedro.com.ioasystestekotlin.presentation.State
-import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState.Companion.bothError
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState.Companion.emailError
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState.Companion.loginInvalid
+import pedro.com.ioasystestekotlin.presentation.login.LoginFieldState.Companion.passwordError
 import pedro.com.ioasystestekotlin.presentation.login.LoginViewModel
 import pedro.com.ioasystestekotlin.ui.ext.*
 import pedro.com.ioasystestekotlin.ui.home.HomeActivity
@@ -48,20 +51,20 @@ class LoginActivity : AppCompatActivity() {
                     val errorMessage = viewState.throwable?.message
 
                     when (errorMessage) {
-                        LoginFieldState.emailError() -> {
+                        emailError() -> {
                             invalidateEmail()
                         }
 
-                        LoginFieldState.passwordError() -> {
+                        passwordError() -> {
                             invalidatePassword()
                         }
 
-                        LoginFieldState.bothError() -> {
+                        bothError() -> {
                             invalidateEmail()
                             invalidatePassword()
                         }
 
-                        LoginFieldState.loginInvalid() -> {
+                        loginInvalid() -> {
                             toast(getString(R.string.invalid_login), Toast.LENGTH_LONG)
                         }
 

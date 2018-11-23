@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import pedro.com.ioasystestekotlin.domain.ext.validateEmail
 import pedro.com.ioasystestekotlin.domain.ext.validatePassword
-import pedro.com.ioasystestekotlin.domain.usecase.login.LoginCaseUse
+import pedro.com.ioasystestekotlin.domain.usecase.login.LoginUseCase
 import pedro.com.ioasystestekotlin.presentation.model.User
 import pedro.com.ioasystestekotlin.presentation.ViewState
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.failure
@@ -13,7 +13,7 @@ import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.initializing
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.loading
 import pedro.com.ioasystestekotlin.presentation.ViewState.Companion.success
 
-class LoginViewModel(private val loginCaseUse: LoginCaseUse) : ViewModel() {
+class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     private var mUser = MutableLiveData<User>()
     private var mState = MutableLiveData<ViewState<String>>()
 
@@ -39,7 +39,7 @@ class LoginViewModel(private val loginCaseUse: LoginCaseUse) : ViewModel() {
     }
 
     private fun sendRequest(email: String, password: String) {
-        loginCaseUse.signIn(
+        loginUseCase.signIn(
                 email = email, password = password,
                 onSuccess = {
                     mState.postValue(success())
@@ -77,7 +77,7 @@ class LoginViewModel(private val loginCaseUse: LoginCaseUse) : ViewModel() {
     }
 
     override fun onCleared() {
-        loginCaseUse.cancelJob()
+        loginUseCase.cancelJob()
         super.onCleared()
     }
 }

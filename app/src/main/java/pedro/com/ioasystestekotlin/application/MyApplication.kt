@@ -13,6 +13,7 @@ class MyApplication : Application() {
     companion object {
         var database: AppDataBase? = null
         const val DATABASE_NAME = "EnterprisesDb"
+        var EMAIL = ""
     }
 
     override fun onCreate() {

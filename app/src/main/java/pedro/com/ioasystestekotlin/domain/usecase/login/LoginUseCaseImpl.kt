@@ -1,20 +1,18 @@
 package pedro.com.ioasystestekotlin.domain.usecase.login
 
-import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import pedro.com.ioasystestekotlin.application.MyApplication
 import pedro.com.ioasystestekotlin.data.cache.convertToHeader
 import pedro.com.ioasystestekotlin.data.cache.room.repo.HeaderRoom
-import pedro.com.ioasystestekotlin.data.ext.putSharedPreferences
 import pedro.com.ioasystestekotlin.data.remote.model.UserApi
 import pedro.com.ioasystestekotlin.data.remote.repository.login.LoginRepository
 import kotlin.coroutines.CoroutineContext
 
-class LoginCaseUseImpl(private val authProvider: LoginRepository,
-                       private val headerRoom: HeaderRoom,
-                       private val app: Application) : LoginCaseUse, CoroutineScope {
+class LoginUseCaseImpl(private val authProvider: LoginRepository,
+                       private val headerRoom: HeaderRoom) : LoginUseCase, CoroutineScope {
     private var job: Job = Job()
 
     override val coroutineContext: CoroutineContext
@@ -35,9 +33,7 @@ class LoginCaseUseImpl(private val authProvider: LoginRepository,
                 return@launch
             }
 
-            app.putSharedPreferences(keyToAccess = "header",
-                                     keys = mapOf("uid" to email)
-            )
+            MyApplication.EMAIL = email
             headerRoom.insertHeader(result.data.convertToHeader())
             onSuccess()
 
