@@ -23,10 +23,7 @@ class SearchEnterpriseUseCaseImpl(private val search: EnterpriseRepository,
         jobSearch = CoroutineScope(Dispatchers.IO)
                 .launch {
                     val header = headerRoom.getHeader(
-                            uid = app.getStringByPreferences(
-                                    keyToAccess = "uid",
-                                    key = "uid"
-                            )
+                            uid = app.getStringByPreferences(keyToAccess = "header", key = "uid")
                     )
                     if(header == null){
                         errorSearch(Exception("HeaderNotFound"))

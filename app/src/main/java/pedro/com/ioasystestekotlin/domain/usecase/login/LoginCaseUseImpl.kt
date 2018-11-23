@@ -35,7 +35,7 @@ class LoginCaseUseImpl(private val authProvider: LoginRepository,
                 return@launch
             }
 
-            app.putSharedPreferences(keyToAccess = "uid",
+            app.putSharedPreferences(keyToAccess = "header",
                                      keys = mapOf("uid" to email)
             )
             headerRoom.insertHeader(result.data.convertToHeader())
